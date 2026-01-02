@@ -16,7 +16,9 @@
     cursor: inherit;
   }
 
-  a, button, [role="button"] {
+  a,
+  button,
+  [role="button"] {
     cursor: pointer;
   }
 }
@@ -52,7 +54,8 @@
   }
 
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
@@ -65,7 +68,8 @@
       box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
     }
     to {
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8),
+        0 0 30px rgba(59, 130, 246, 0.6);
     }
   }
 
@@ -82,5 +86,21 @@
     100% {
       transform: translate(0px, 0px) scale(1);
     }
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  /* Performance optimizations */
+  .glass-effect {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 }

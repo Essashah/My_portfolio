@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import AnimatedCounter from './AnimatedCounter'
 
 interface AboutProps {
   setActiveSection: (section: string) => void
@@ -114,7 +115,9 @@ const About = ({ setActiveSection }: AboutProps) => {
               </p>
               <div className="flex gap-6 mt-8">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-white">5+</div>
+                  <div className="text-4xl font-bold text-white">
+                    <AnimatedCounter value={5} suffix="+" />
+                  </div>
                   <div className="text-sm text-gray-400">Years Experience</div>
                 </div>
                 <div className="text-center">
@@ -122,7 +125,9 @@ const About = ({ setActiveSection }: AboutProps) => {
                   <div className="text-sm text-gray-400">Specialist</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-white">100%</div>
+                  <div className="text-4xl font-bold text-white">
+                    <AnimatedCounter value={100} suffix="%" />
+                  </div>
                   <div className="text-sm text-gray-400">Passion</div>
                 </div>
               </div>

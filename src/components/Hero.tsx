@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown } from 'react-icons/fa'
+import TypingAnimation from './TypingAnimation'
 
 interface HeroProps {
   setActiveSection: (section: string) => void
@@ -77,7 +78,7 @@ const Hero = ({ setActiveSection }: HeroProps) => {
             variants={itemVariants}
             className="text-5xl md:text-7xl font-bold mb-6 text-white"
           >
-            AI/ML Engineer
+            <TypingAnimation text="AI/ML Engineer" />
           </motion.h1>
 
           <motion.p
@@ -191,8 +192,21 @@ const Hero = ({ setActiveSection }: HeroProps) => {
         ))}
       </div>
       
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
+      {/* Subtle grid pattern with parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"
+        style={{
+          y: 0,
+        }}
+        animate={{
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
     </section>
   )
 }
