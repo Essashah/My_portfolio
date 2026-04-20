@@ -44,50 +44,50 @@ const About = ({ setActiveSection }: AboutProps) => {
   }
 
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-6 py-20"
-    >
-      <div className="max-w-7xl mx-auto">
+    <section id="about" ref={sectionRef} className="section-shell flex items-center">
+      <div className="section-container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="space-y-12"
+          className="space-y-14"
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              About <span className="gradient-text">Me</span>
+          <motion.div variants={itemVariants} className="text-center">
+            <p className="section-kicker">About</p>
+            <h2 className="section-title">
+              Engineering AI products with precision
             </h2>
-            <div className="w-24 h-1 bg-gray-600 mx-auto rounded"></div>
+            <p className="section-subtitle mx-auto">
+              Product thinking, production-grade architecture, and ML rigor from experimentation
+              through deployment.
+            </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={itemVariants} className="order-2 md:order-1">
               <div className="relative">
                   <motion.div
-                    className="w-80 h-80 mx-auto rounded-full glass-effect p-2 animate-float"
+                    className="mx-auto h-72 w-72 rounded-3xl border border-[rgba(141,175,255,0.25)] bg-[rgba(14,22,38,0.88)] p-2 shadow-[0_20px_56px_-32px_rgba(91,140,255,0.72)] md:h-80 md:w-80"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <motion.div
-                      className="w-full h-full rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden"
+                      className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[1.3rem] bg-gradient-to-br from-[#172745] to-[#0b1528]"
                       initial={{ rotate: 0 }}
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.8 }}
+                      whileHover={{ rotate: 2 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-tr from-[#4f8fff]/35 to-transparent"></div>
                       <img 
                         src="/icons/my emoji.png" 
                         alt="Essa Shah"
-                        className="w-full h-full object-cover rounded-full relative z-10 translate-x-3"
+                        className="relative z-10 h-full w-full translate-x-3 rounded-[1.3rem] object-cover"
                       />
                     </motion.div>
                   </motion.div>
                   <motion.div
-                    className="absolute -bottom-4 left-0 right-0 mx-auto w-1/2 h-1 bg-gray-600 rounded"
+                    className="absolute -bottom-4 left-0 right-0 mx-auto h-1 w-1/2 rounded bg-gradient-to-r from-[#4f8fff] to-[#8b5cf6]"
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
@@ -97,38 +97,34 @@ const About = ({ setActiveSection }: AboutProps) => {
             </motion.div>
 
             <motion.div variants={itemVariants} className="order-1 md:order-2 space-y-6">
-              <h3 className="text-3xl font-bold mb-6 text-white">
+              <h3 className="text-2xl font-semibold text-slate-50 md:text-3xl">
                 AI/ML Engineer & Computer Vision Specialist
               </h3>
-              <p className="text-gray-400 leading-relaxed">
-                I'm a dedicated AI/ML Engineer with a strong foundation in computer vision, 
-                deep learning, and data science. Skilled in Python, TensorFlow, PyTorch, and 
-                related libraries for building and deploying machine learning models. Experienced 
-                in developing end-to-end AI pipelines and using data-driven approaches to solve 
-                complex problems.
+              <p className="leading-relaxed text-slate-300">
+                I build robust AI systems that bridge model quality and production constraints.
+                My work spans experimentation, backend architecture, observability, and deployment
+                workflows for real-world environments.
               </p>
-              <p className="text-gray-300 leading-relaxed">
-                Currently pursuing a BSc in Computing at Birkbeck University of London (2026), 
-                I'm passionate about applying machine learning to real-world applications, particularly 
-                in sports analytics and computer vision systems. I bring expertise in scalable backend 
-                systems, AI-driven pipelines, and continuous learning.
+              <p className="leading-relaxed text-slate-300">
+                I focus on computer vision, generative AI integrations, and scalable backend services
+                that keep systems maintainable under growth and strict compliance expectations.
               </p>
-              <div className="flex gap-6 mt-8">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-white">
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                <div className="surface-card interactive-card p-4 text-center">
+                  <div className="text-3xl font-semibold text-slate-100">
                     <AnimatedCounter value={5} suffix="+" />
                   </div>
-                  <div className="text-sm text-gray-400">Years Experience</div>
+                  <div className="mt-1 text-xs text-slate-400 md:text-sm">Years Experience</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-white">AI</div>
-                  <div className="text-sm text-gray-400">Specialist</div>
+                <div className="surface-card interactive-card p-4 text-center">
+                  <div className="text-3xl font-semibold text-slate-100">26</div>
+                  <div className="mt-1 text-xs text-slate-400 md:text-sm">Stack Icons Used</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-white">
+                <div className="surface-card interactive-card p-4 text-center">
+                  <div className="text-3xl font-semibold text-slate-100">
                     <AnimatedCounter value={100} suffix="%" />
                   </div>
-                  <div className="text-sm text-gray-400">Passion</div>
+                  <div className="mt-1 text-xs text-slate-400 md:text-sm">Execution Focus</div>
                 </div>
               </div>
             </motion.div>

@@ -20,14 +20,14 @@ const ScrollProgress = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-1 bg-gray-900 z-[9998]"
+      className="fixed left-0 right-0 top-0 z-[9998] h-0.5 bg-transparent"
       initial={{ opacity: 0 }}
       animate={{ opacity: scrollProgress > 0 ? 1 : 0 }}
     >
       <motion.div
-        className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+        className="h-full bg-gradient-to-r from-[#4f8fff] via-[#7a5cff] to-[#22d3ee]"
         style={{ width: `${scrollProgress}%` }}
-        transition={{ duration: 0.1 }}
+        transition={{ duration: 0.12, ease: 'easeOut' }}
       />
     </motion.div>
   )

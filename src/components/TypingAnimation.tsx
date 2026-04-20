@@ -32,7 +32,7 @@ const TypingAnimation = ({ text, className = '' }: TypingAnimationProps) => {
         <motion.span
           animate={{ opacity: [1, 0] }}
           transition={{ duration: 0.8, repeat: Infinity }}
-          className="inline-block w-1 h-8 bg-blue-400 ml-1"
+          className="ml-1 inline-block h-8 w-1 bg-[#7a5cff]"
         />
       )}
     </span>

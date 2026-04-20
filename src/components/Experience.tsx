@@ -24,47 +24,74 @@ const Experience = ({ setActiveSection }: ExperienceProps) => {
 
   const experiences = [
     {
-      title: 'AI Backend Engineer',
+      title: 'AWS GenAI Developer',
+      company: 'Appbank',
+      period: 'Feb 2026 - Present',
+      description:
+        'Designed and deployed compliant GenAI systems for regulated banking workflows.',
+      achievements: [
+        'Designed orchestration agents with AWS Bedrock Agents using Titan and Claude models, aligned with AWS Well-Architected Framework (AI/ML Lens)',
+        'Built RAG systems with AWS Knowledge Bases over FCA and PRA rulebooks for legally compliant outputs',
+        'Implemented AWS Guardrails for Responsible AI controls, PII filtering, and fine-grained access control',
+        'Delivered in Agile sprints with Jira, collaborating with senior engineers under strict compliance standards',
+      ],
+    },
+    {
+      title: 'Full-Stack AI Backend Engineer',
       company: 'Oont',
-      period: 'September 2025 – Present',
-      description: 'Developed and maintained scalable backend APIs and migrated legacy systems.',
+      period: 'Sep 2025 - Feb 2026',
+      description: 'Built and optimized scalable backend systems for AI-driven product delivery.',
       achievements: [
-        'Developed scalable backend APIs in Node.js/TypeScript for high-traffic applications',
-        'Migrated and modernized legacy modules using NestJS, Express.js, PostgreSQL, and Redis',
-        'Collaborated with frontend, data, and product teams using GitHub + Slack in Agile sprints',
-        'Ensured system reliability, performance optimization, and robust error handling',
+        'Built backend systems using Node.js, Express.js, NestJS, PostgreSQL, and Redis',
+        'Refactored legacy services into a unified and scalable backend architecture',
+        'Improved API performance, reliability, and deployment workflows',
+        'Collaborated with frontend, AI, and product teams in Agile environments',
       ],
     },
     {
-      title: 'Computer Vision Engineer – Sports Analytics',
+      title: 'Computer Vision Engineer (Sports Analytics)',
       company: 'Scout-Me Online',
-      period: 'September 2025 – Present',
-      description: 'Developed real-time computer vision systems for sports analytics.',
+      period: 'Sep 2025 - Feb 2026',
+      description: 'Built real-time CV systems for low-latency sports analytics.',
       achievements: [
-        'Developed real-time computer vision system to detect and track fast-moving objects',
-        'Built AI-driven sports analytics pipeline for gameplay analysis',
-        'Designed deep learning–based tracking system for continuous object monitoring',
+        'Designed pipelines for tracking fast-moving sports objects in real time',
+        'Built deep-learning tracking systems optimized for low-latency inference',
+        'Developed automated video analytics tools for instant gameplay insights',
       ],
     },
     {
-      title: 'Software Engineer Intern',
-      company: 'Qadims Lumiere School',
-      period: '2021 – 2023',
-      description: 'Developed ML models and data processing pipelines.',
+      title: 'AI Systems Engineer (Peacebuilding & Data Infrastructure)',
+      company: 'ICAN Peacebuilding Network (via PAIMAN Alumni Trust)',
+      period: '2023 - 2024',
+      description:
+        'Architected reliable and ethical data infrastructure for distributed peacebuilding operations.',
       achievements: [
-        'Developed and deployed machine learning models for personalization',
-        'Built data processing pipelines for structured analysis and reporting',
-        'Collaborated in Agile environment to deliver AI-driven features',
+        'Architected secure databases to track interventions and outcomes across distributed regions',
+        'Designed schemas prioritizing integrity, auditability, and ethical data handling',
+        'Built foundational data layers for future predictive analytics and impact assessment',
+        'Developed systems where data accuracy directly affected real-world decisions',
+      ],
+    },
+    {
+      title: 'Programming & Technology Instructor (Volunteer Leadership Role)',
+      company: 'TOLANA - PAIMAN Alumni Trust, Pakistan',
+      period: '2021 - 2023',
+      description: 'Led technical education programs for low-resource and conflict-affected regions.',
+      achievements: [
+        'Designed and delivered programming curricula for youth in low-resource regions',
+        'Taught Python, web development, and introductory AI under severe infrastructure constraints',
+        'Built resilient learning workflows for unreliable connectivity and limited hardware',
+        'Mentored students on beginner full-stack and machine learning projects',
       ],
     },
     {
       title: 'Web Development Instructor',
       company: 'Qadims Lumiere School',
-      period: '2020 – 2021',
-      description: 'Taught programming fundamentals and AI/ML concepts.',
+      period: '2020 - 2021',
+      description: 'Taught web development and foundational programming with practical project mentorship.',
       achievements: [
-        'Taught programming fundamentals and introduced AI and ML concepts',
-        'Mentored students on Python projects and basic ML workflows',
+        'Taught web development, Python fundamentals, and introductory AI concepts',
+        'Mentored students on full-stack and beginner machine learning projects',
       ],
     },
   ]
@@ -91,66 +118,58 @@ const Experience = ({ setActiveSection }: ExperienceProps) => {
   }
 
   return (
-    <section
-      id="experience"
-      ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-6 py-20"
-    >
-      <div className="max-w-7xl mx-auto w-full">
+    <section id="experience" ref={sectionRef} className="section-shell flex items-center">
+      <div className="section-container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              Work <span className="gradient-text">Experience</span>
+          <motion.div variants={itemVariants} className="mb-14 text-center">
+            <p className="section-kicker">Experience</p>
+            <h2 className="section-title">
+              Systems designed for impact
             </h2>
-            <div className="w-24 h-1 bg-gray-600 mx-auto rounded"></div>
+            <p className="section-subtitle mx-auto">
+              A delivery track record across backend engineering, computer vision,
+              and production ML integration.
+            </p>
           </motion.div>
 
-          <div className="space-y-12">
+          <div className="relative space-y-6">
+            <div className="pointer-events-none absolute left-5 top-10 hidden h-[calc(100%-4rem)] w-px bg-gradient-to-b from-[#4f8fff]/70 via-[#8b5cf6]/50 to-transparent md:block" />
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="relative"
+                className="surface-card interactive-card relative overflow-hidden p-7 md:ml-8 md:p-8"
+                whileHover={{ y: -4 }}
               >
-                <motion.div 
-                  className="glass-effect rounded-2xl p-8 transition-all duration-300 relative group cursor-pointer"
-                  whileHover={{ 
-                    boxShadow: '0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2)'
-                  }}
-                >
-                  <motion.div 
-                    className="absolute -inset-1 bg-blue-500/20 blur-2xl rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300"
-                  />
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,143,255,0.14),transparent_35%)]" />
+                <div className="relative">
+                  <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center">
-                        <FaBriefcase className="text-2xl" />
+                      <div className="icon-tile h-11 w-11 text-blue-200">
+                        <FaBriefcase className="text-lg" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-white">{exp.title}</h3>
-                        <p className="text-blue-400">{exp.company}</p>
+                        <h3 className="text-xl font-semibold text-slate-100 md:text-2xl">{exp.title}</h3>
+                        <p className="font-medium text-blue-200">{exp.company}</p>
                       </div>
                     </div>
-                    <span className="text-gray-400 mt-2 md:mt-0">{exp.period}</span>
+                    <span className="mt-2 premium-chip md:mt-0">{exp.period}</span>
                   </div>
-                    <p className="text-gray-300 mb-4">{exp.description}</p>
-                    <ul className="space-y-2">
-                      {exp.achievements.map((achievement, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-gray-400">
-                          <span className="text-white mt-1">•</span>
-                          <span>{achievement}</span>
-                        </li>
-                      ))}
+                  <p className="mb-4 text-slate-300">{exp.description}</p>
+                  <ul className="space-y-2">
+                    {exp.achievements.map((achievement, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-slate-300">
+                        <span className="mt-1 text-blue-300">•</span>
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
                   </ul>
-                </motion.div>
+                </div>
               </motion.div>
             ))}
           </div>

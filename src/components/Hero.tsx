@@ -1,7 +1,8 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown } from 'react-icons/fa'
+import { FaArrowDown, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
 import TypingAnimation from './TypingAnimation'
+import { techIcons } from '../data/techIcons'
 
 interface HeroProps {
   setActiveSection: (section: string) => void
@@ -9,6 +10,7 @@ interface HeroProps {
 
 const Hero = ({ setActiveSection }: HeroProps) => {
   const sectionRef = useRef<HTMLElement>(null)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,27 +25,35 @@ const Hero = ({ setActiveSection }: HeroProps) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [setActiveSection])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
-  }
+  const containerVariants = shouldReduceMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
+      }
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.12,
+            delayChildren: 0.1,
+          },
+        },
+      }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  }
+  const itemVariants = shouldReduceMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
+      }
+    : {
+        hidden: { opacity: 0, y: 16 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.45, ease: 'easeOut' },
+        },
+      }
 
   const scrollToAbout = () => {
     const element = document.getElementById('about')
@@ -52,161 +62,162 @@ const Hero = ({ setActiveSection }: HeroProps) => {
     }
   }
 
+  const spotlightPriority = [
+    'React',
+    'Next.js',
+    'TypeScript',
+    'Node.js',
+    'FastAPI',
+    'Django',
+    'AWS',
+    'TensorFlow',
+  ]
+
+  const spotlightStack = spotlightPriority
+    .map((name) => techIcons.find((item) => item.name === name))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+
   return (
-    <section
-      id="hero"
-      ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative px-6 py-20"
-    >
-      <div className="max-w-7xl mx-auto text-center">
+    <section id="hero" ref={sectionRef} className="section-shell relative flex items-center pt-36">
+      <div className="section-container">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-8"
+          className="section-panel relative overflow-hidden"
         >
-          <motion.div variants={itemVariants}>
-            <motion.div
-              className="text-sm md:text-base text-blue-400 mb-4 inline-block px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full"
-              whileHover={{ scale: 1.05 }}
-            >
-              Syed Muhammad Essa Shah
-            </motion.div>
-          </motion.div>
+          {!shouldReduceMotion && (
+            <>
+              <motion.div
+                className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[#4f8fff]/30 blur-3xl"
+                animate={{ x: [0, 14, 0], y: [0, 8, 0], opacity: [0.45, 0.6, 0.45] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="pointer-events-none absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-[#8b5cf6]/25 blur-3xl"
+                animate={{ x: [0, -16, 0], y: [0, -10, 0], opacity: [0.35, 0.52, 0.35] }}
+                transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </>
+          )}
+          <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(79,143,255,0.18),transparent_45%)]" />
 
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold mb-6 text-white"
-          >
-            <TypingAnimation text="AI/ML Engineer" />
-          </motion.h1>
+          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="space-y-8">
+              <motion.div variants={itemVariants}>
+                <motion.div
+                  className="premium-chip"
+                >
+                  AI Engineer - Builder - Research Mindset
+                </motion.div>
+              </motion.div>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12"
-          >
-            AI/ML Engineer specializing in computer vision, deep learning, and data science.
-            Passionate about applying machine learning to solve real-world problems.
-          </motion.p>
+              <motion.h1
+                variants={itemVariants}
+                className="max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-50 md:text-7xl"
+                style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+              >
+                <TypingAnimation text="I Architect Production AI Systems." />
+              </motion.h1>
 
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap gap-4 justify-center mb-16"
-          >
+              <motion.p
+                variants={itemVariants}
+                className="max-w-3xl text-lg leading-relaxed text-slate-300 md:text-xl"
+              >
+                From model experimentation to secure APIs and scalable cloud runtimes, I deliver
+                AI products with reliability, observability, and business impact built in.
+              </motion.p>
+
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-wrap gap-3"
+              >
             <motion.a
               href="https://github.com/Essashah"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 glass-effect rounded-lg flex items-center gap-2 transition-all relative group overflow-hidden"
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(59, 130, 246, 0.6)' }}
-              whileTap={{ scale: 0.95 }}
+              className="button-primary"
+              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
             >
-              <motion.div 
-                className="absolute -inset-1 bg-blue-500/30 blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300"
-              />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-              <FaGithub className="text-2xl relative z-10" />
-              <span className="relative z-10">GitHub</span>
+              <FaGithub className="text-base" />
+              <span>GitHub</span>
             </motion.a>
 
             <motion.a
               href="https://www.linkedin.com/in/essa-shah-7a0a5a294"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 glass-effect rounded-lg flex items-center gap-2 transition-all relative group overflow-hidden"
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(59, 130, 246, 0.6)' }}
-              whileTap={{ scale: 0.95 }}
+              className="button-secondary"
+              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
             >
-              <motion.div 
-                className="absolute -inset-1 bg-blue-500/30 blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300"
-              />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-              <FaLinkedin className="text-2xl relative z-10" />
-              <span className="relative z-10">LinkedIn</span>
+              <FaLinkedin className="text-base" />
+              <span>LinkedIn</span>
             </motion.a>
 
             <motion.a
               href="mailto:essashah10@gmail.com"
-              className="px-6 py-3 glass-effect rounded-lg flex items-center gap-2 transition-all relative group overflow-hidden"
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(59, 130, 246, 0.6)' }}
-              whileTap={{ scale: 0.95 }}
+              className="button-secondary"
+              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
             >
-              <motion.div 
-                className="absolute -inset-1 bg-blue-500/30 blur-lg opacity-0 group-hover:opacity-100 transition-all duration-300"
-              />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-              <FaEnvelope className="text-2xl relative z-10" />
-              <span className="relative z-10">Email</span>
+              <FaEnvelope className="text-base" />
+              <span>Email</span>
             </motion.a>
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center"
-          >
-            <motion.button
-              onClick={scrollToAbout}
-              className="group flex flex-col items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors"
-              whileHover={{ y: 10 }}
-            >
-              <span className="text-sm">Scroll to explore</span>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <FaArrowDown className="text-xl" />
               </motion.div>
-            </motion.button>
-          </motion.div>
+
+              <motion.div variants={itemVariants} className="pt-2">
+                <div className="mb-4 flex flex-wrap gap-2">
+                  <span className="premium-chip">GenAI Workflow Design</span>
+                  <span className="premium-chip">Backend + MLOps Delivery</span>
+                </div>
+                <motion.button
+                  onClick={scrollToAbout}
+                  className="group inline-flex items-center gap-2 rounded-full border border-[rgba(141,175,255,0.28)] bg-[rgba(10,17,30,0.72)] px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-[rgba(141,175,255,0.48)] hover:text-white"
+                  whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+                >
+                  <span>Scroll to explore</span>
+                  <motion.div
+                    animate={shouldReduceMotion ? undefined : { y: [0, 3, 0] }}
+                    transition={
+                      shouldReduceMotion
+                        ? undefined
+                        : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }
+                    }
+                  >
+                    <FaArrowDown />
+                  </motion.div>
+                </motion.button>
+              </motion.div>
+            </div>
+
+            <motion.aside variants={itemVariants} className="space-y-4 lg:pt-6">
+              <div className="surface-card p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-200">Current Focus</p>
+                <p className="mt-2 text-xl font-semibold text-slate-100" style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
+                  Multi-model Systems + Guardrails
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                  Deploying practical AI in regulated environments with resilient architecture and
+                  measurable outcomes.
+                </p>
+              </div>
+
+              <div className="surface-card p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Spotlight Stack</p>
+                <div className="mt-4 grid grid-cols-4 gap-3">
+                  {spotlightStack.map((stack) => (
+                    <div key={stack.name} className="icon-tile h-14 w-14">
+                      <img src={stack.iconPath} alt={stack.name} className="h-9 w-9 object-contain" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.aside>
+          </div>
         </motion.div>
       </div>
-
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/40 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              y: [null, Math.random() * window.innerHeight],
-              x: [null, Math.random() * window.innerWidth],
-              opacity: [0.2, 0.6, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: Math.random() * 8 + 5,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Subtle grid pattern with parallax */}
-      <motion.div 
-        className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"
-        style={{
-          y: 0,
-        }}
-        animate={{
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
     </section>
   )
 }

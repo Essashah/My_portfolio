@@ -1,19 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-base: #050914;
+    --bg-surface: #0c1425;
+    --bg-surface-2: #101a2f;
+    --text-main: #edf3ff;
+    --text-muted: #9aa9c7;
+    --line-soft: rgba(141, 175, 255, 0.2);
+    --line-strong: rgba(141, 175, 255, 0.35);
+    --glow-primary: rgba(98, 163, 255, 0.45);
+    --glow-secondary: rgba(139, 92, 246, 0.38);
+  }
+
   html {
     scroll-behavior: smooth;
     cursor: default;
   }
 
   body {
-    @apply bg-gray-950 text-gray-100;
+    @apply antialiased;
+    background: radial-gradient(circle at 10% 10%, rgba(84, 165, 255, 0.16), transparent 40%),
+      radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.14), transparent 35%),
+      radial-gradient(circle at 55% 90%, rgba(34, 211, 238, 0.12), transparent 40%),
+      var(--bg-base);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
   }
 
   * {
     cursor: inherit;
+    border-color: var(--line-soft);
   }
 
   a,
@@ -24,21 +46,171 @@
 }
 
 @layer utilities {
+  .ambient-mesh {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(84, 165, 255, 0.2), transparent 42%),
+      radial-gradient(circle at 85% 18%, rgba(34, 211, 238, 0.16), transparent 40%),
+      radial-gradient(circle at 60% 82%, rgba(139, 92, 246, 0.18), transparent 38%);
+    background-size: 140% 140%;
+    animation: meshShift 14s ease-in-out infinite;
+  }
+
+  .ambient-blob-a,
+  .ambient-blob-b {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 9999px;
+    filter: blur(60px);
+    z-index: 0;
+    opacity: 0.55;
+  }
+
+  .ambient-blob-a {
+    width: 340px;
+    height: 340px;
+    top: 14%;
+    left: -80px;
+    background: radial-gradient(circle, rgba(84, 165, 255, 0.35), rgba(84, 165, 255, 0));
+    animation: driftA 12s ease-in-out infinite;
+  }
+
+  .ambient-blob-b {
+    width: 380px;
+    height: 380px;
+    bottom: 8%;
+    right: -120px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0));
+    animation: driftB 13s ease-in-out infinite;
+  }
+
+  .section-shell {
+    @apply relative min-h-screen px-6 py-24 md:py-28;
+  }
+
+  .section-container {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .section-panel {
+    @apply rounded-3xl p-8 md:p-10;
+    background: linear-gradient(150deg, rgba(23, 35, 61, 0.85), rgba(14, 23, 42, 0.82));
+    border: 1px solid var(--line-soft);
+    box-shadow: 0 18px 64px -30px var(--glow-primary);
+    backdrop-filter: blur(16px);
+  }
+
+  .section-kicker {
+    @apply text-xs font-semibold uppercase tracking-[0.18em];
+    color: #9eccff;
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+
+  .section-title {
+    @apply mt-3 text-4xl font-semibold leading-tight md:text-5xl;
+    color: var(--text-main);
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .section-subtitle {
+    @apply mt-4 max-w-3xl text-base leading-relaxed md:text-lg;
+    color: var(--text-muted);
+  }
+
+  .surface-card {
+    @apply rounded-2xl;
+    border: 1px solid var(--line-soft);
+    background: linear-gradient(145deg, rgba(15, 25, 44, 0.95), rgba(11, 18, 33, 0.92));
+    box-shadow: 0 16px 42px -28px rgba(21, 41, 88, 0.7);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interactive-card {
+    @apply transition-all duration-300;
+    will-change: transform, box-shadow;
+  }
+
+  .interactive-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 70px -38px var(--glow-primary);
+    border-color: var(--line-strong);
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2;
+    background: linear-gradient(105deg, #4f8fff, #7a5cff);
+    box-shadow: 0 16px 40px -24px rgba(98, 133, 255, 0.82);
+    border: 1px solid rgba(147, 186, 255, 0.45);
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+
+  .button-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2;
+    border: 1px solid var(--line-soft);
+    background: rgba(9, 16, 29, 0.75);
+    color: #d5e5ff;
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+
+  .button-secondary:hover {
+    transform: translateY(-1px);
+    border-color: var(--line-strong);
+    background: rgba(14, 22, 37, 0.9);
+  }
+
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(92deg, #8ec8ff, #79a5ff, #a992ff);
   }
 
   .glass-effect {
-    @apply bg-gray-800/50 backdrop-blur-lg border border-gray-700/50;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    @apply backdrop-blur-md;
+    border: 1px solid var(--line-soft);
+    background: rgba(14, 22, 38, 0.66);
+    box-shadow: 0 16px 34px -22px rgba(18, 36, 80, 0.65);
+  }
+
+  .premium-chip {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em];
+    color: #d4e7ff;
+    border: 1px solid rgba(141, 175, 255, 0.3);
+    background: linear-gradient(145deg, rgba(22, 35, 60, 0.9), rgba(13, 21, 39, 0.85));
+  }
+
+  .premium-input {
+    @apply w-full rounded-xl px-4 py-3 outline-none transition-all duration-300;
+    background: rgba(8, 14, 26, 0.85);
+    border: 1px solid rgba(141, 175, 255, 0.2);
+    color: #e9f1ff;
+  }
+
+  .premium-input::placeholder {
+    color: #6f87b4;
+  }
+
+  .premium-input:focus {
+    border-color: rgba(141, 175, 255, 0.55);
+    box-shadow: 0 0 0 4px rgba(98, 163, 255, 0.16);
+  }
+
+  .icon-tile {
+    @apply flex h-12 w-12 items-center justify-center rounded-xl;
+    background: linear-gradient(145deg, rgba(25, 39, 66, 0.9), rgba(13, 22, 39, 0.95));
+    border: 1px solid rgba(141, 175, 255, 0.28);
   }
 
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 7s ease-in-out infinite;
   }
 
   .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 1.8s ease-in-out infinite alternate;
   }
 
   .animate-blob {
@@ -59,17 +231,16 @@
       transform: translateY(0px);
     }
     50% {
-      transform: translateY(-20px);
+      transform: translateY(-8px);
     }
   }
 
   @keyframes glow {
     from {
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 0 8px rgba(79, 143, 255, 0.25);
     }
     to {
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8),
-        0 0 30px rgba(59, 130, 246, 0.6);
+      box-shadow: 0 0 16px rgba(139, 92, 246, 0.3);
     }
   }
 
@@ -88,15 +259,55 @@
     }
   }
 
+  @keyframes meshShift {
+    0% {
+      background-position: 0% 0%, 100% 0%, 50% 100%;
+    }
+    50% {
+      background-position: 8% 6%, 94% 8%, 48% 94%;
+    }
+    100% {
+      background-position: 0% 0%, 100% 0%, 50% 100%;
+    }
+  }
+
+  @keyframes driftA {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(18px, -12px); }
+  }
+
+  @keyframes driftB {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-16px, 14px); }
+  }
+
+  .ambient-grain {
+    position: relative;
+  }
+
+  .ambient-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    background-image: radial-gradient(rgba(219, 233, 255, 0.2) 0.5px, transparent 0.5px);
+    background-size: 2px 2px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  }
+
   .perspective-1000 {
     perspective: 1000px;
     transform-style: preserve-3d;
   }
 
-  /* Performance optimizations */
   .glass-effect {
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  .text-muted {
+    color: var(--text-muted);
   }
 
   img {

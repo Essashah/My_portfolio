@@ -19,33 +19,39 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden bg-transparent">
       <LoadingScreen onComplete={handleLoadingComplete} />
-      
+
       <AnimatePresence>
         {!isLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
             className="w-full"
           >
             <ScrollProgress />
-            
-            {/* Subtle animated background gradient */}
-            <div className="fixed inset-0 bg-gradient-to-br from-gray-950 via-blue-950/10 to-gray-950 pointer-events-none"></div>
-            
+
+            <motion.div
+              className="ambient-mesh pointer-events-none fixed inset-0"
+              animate={{ opacity: [0.55, 0.95, 0.55] }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <div className="ambient-blob-a" />
+            <div className="ambient-blob-b" />
+            <div className="pointer-events-none fixed bottom-[-240px] left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(58,119,255,0.28),transparent_65%)] blur-3xl" />
+
             <Navigation activeSection={activeSection} setActiveSection={setActiveSection} />
-            
-            <main className="relative z-10">
+
+            <main className="ambient-grain relative z-10">
               <Hero setActiveSection={setActiveSection} />
               <About setActiveSection={setActiveSection} />
               <Experience setActiveSection={setActiveSection} />
               <Skills setActiveSection={setActiveSection} />
               <Contact setActiveSection={setActiveSection} />
             </main>
-            
+
             <ScrollToTop />
           </motion.div>
         )}
