@@ -61,7 +61,7 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="relative cursor-pointer text-lg font-semibold tracking-tight text-slate-100 md:text-xl"
-          style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+          style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}
           onClick={() => scrollToSection('hero')}
           whileHover={{ y: -1 }}
         >
@@ -78,7 +78,7 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
                   ? 'text-slate-100'
                   : 'text-slate-300 hover:text-slate-100'
               }`}
-              style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+              style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}
               whileHover={{ y: -1 }}
               whileTap={{ y: 0 }}
             >

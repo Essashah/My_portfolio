@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -29,7 +29,7 @@
       radial-gradient(circle at 55% 90%, rgba(34, 211, 238, 0.12), transparent 40%),
       var(--bg-base);
     color: var(--text-main);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
   }
 
@@ -42,6 +42,14 @@
   button,
   [role="button"] {
     cursor: pointer;
+  }
+
+  /* Hide the native cursor only when the custom cursor is mounted (fine pointers only) */
+  @media (pointer: fine) {
+    .custom-cursor-active,
+    .custom-cursor-active * {
+      cursor: none !important;
+    }
   }
 }
 
@@ -102,14 +110,14 @@
   .section-kicker {
     @apply text-xs font-semibold uppercase tracking-[0.18em];
     color: #9eccff;
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'Syne', 'Outfit', sans-serif;
   }
 
   .section-title {
-    @apply mt-3 text-4xl font-semibold leading-tight md:text-5xl;
+    @apply mt-3 text-4xl font-bold leading-[1.1] md:text-5xl;
     color: var(--text-main);
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Syne', 'Outfit', sans-serif;
+    letter-spacing: -0.035em;
   }
 
   .section-subtitle {
@@ -142,7 +150,7 @@
     background: linear-gradient(105deg, #4f8fff, #7a5cff);
     box-shadow: 0 16px 40px -24px rgba(98, 133, 255, 0.82);
     border: 1px solid rgba(147, 186, 255, 0.45);
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'Syne', 'Outfit', sans-serif;
   }
 
   .button-primary:hover {
@@ -155,7 +163,7 @@
     border: 1px solid var(--line-soft);
     background: rgba(9, 16, 29, 0.75);
     color: #d5e5ff;
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'Syne', 'Outfit', sans-serif;
   }
 
   .button-secondary:hover {
@@ -279,6 +287,59 @@
   @keyframes driftB {
     0%, 100% { transform: translate(0, 0); }
     50% { transform: translate(-16px, 14px); }
+  }
+
+  .marquee-track {
+    animation: marqueeScroll 36s linear infinite;
+  }
+
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .marquee-mask:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+
+  .shimmer-text {
+    background-image: linear-gradient(
+      100deg,
+      #edf3ff 0%,
+      #edf3ff 38%,
+      #8ec8ff 48%,
+      #a992ff 54%,
+      #edf3ff 64%,
+      #edf3ff 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmerSweep 5.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmerSweep {
+    0% { background-position: 120% 0; }
+    55% { background-position: -80% 0; }
+    100% { background-position: -80% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shimmer-text {
+      animation: none;
+      color: var(--text-main);
+    }
   }
 
   .ambient-grain {

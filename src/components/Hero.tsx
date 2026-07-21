@@ -1,16 +1,19 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { FaArrowDown, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
-import TypingAnimation from './TypingAnimation'
-import { techIcons } from '../data/techIcons'
+import ParticleField from './effects/ParticleField'
+import MagneticButton from './effects/MagneticButton'
 
 interface HeroProps {
   setActiveSection: (section: string) => void
 }
 
+const ROLES = ['AI Systems', 'Backend Platforms', 'Vision Pipelines', 'GenAI Products']
+
 const Hero = ({ setActiveSection }: HeroProps) => {
   const sectionRef = useRef<HTMLElement>(null)
   const shouldReduceMotion = useReducedMotion()
+  const [roleIndex, setRoleIndex] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +27,14 @@ const Hero = ({ setActiveSection }: HeroProps) => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [setActiveSection])
+
+  useEffect(() => {
+    if (shouldReduceMotion) return
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length)
+    }, 2600)
+    return () => clearInterval(interval)
+  }, [shouldReduceMotion])
 
   const containerVariants = shouldReduceMotion
     ? {
@@ -62,21 +73,6 @@ const Hero = ({ setActiveSection }: HeroProps) => {
     }
   }
 
-  const spotlightPriority = [
-    'React',
-    'Next.js',
-    'TypeScript',
-    'Node.js',
-    'FastAPI',
-    'Django',
-    'AWS',
-    'TensorFlow',
-  ]
-
-  const spotlightStack = spotlightPriority
-    .map((name) => techIcons.find((item) => item.name === name))
-    .filter((item): item is NonNullable<typeof item> => Boolean(item))
-
   return (
     <section id="hero" ref={sectionRef} className="section-shell relative flex items-center pt-36">
       <div className="section-container">
@@ -86,6 +82,8 @@ const Hero = ({ setActiveSection }: HeroProps) => {
           animate="visible"
           className="section-panel relative overflow-hidden"
         >
+          <ParticleField />
+
           {!shouldReduceMotion && (
             <>
               <motion.div
@@ -102,7 +100,7 @@ const Hero = ({ setActiveSection }: HeroProps) => {
           )}
           <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(79,143,255,0.18),transparent_45%)]" />
 
-          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="relative grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="space-y-8">
               <motion.div variants={itemVariants}>
                 <motion.div
@@ -114,10 +112,24 @@ const Hero = ({ setActiveSection }: HeroProps) => {
 
               <motion.h1
                 variants={itemVariants}
-                className="max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-50 md:text-7xl"
-                style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+                className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl"
+                style={{ fontFamily: "'Syne', 'Outfit', sans-serif", letterSpacing: '-0.04em' }}
               >
-                <TypingAnimation text="I Architect Production AI Systems." />
+                <span className="shimmer-text">I Build Production</span>
+                <span className="block h-[1.25em] overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={ROLES[roleIndex]}
+                      className="gradient-text inline-block"
+                      initial={shouldReduceMotion ? { opacity: 0 } : { y: '100%', opacity: 0 }}
+                      animate={shouldReduceMotion ? { opacity: 1 } : { y: '0%', opacity: 1 }}
+                      exit={shouldReduceMotion ? { opacity: 0 } : { y: '-100%', opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {ROLES[roleIndex]}.
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </motion.h1>
 
               <motion.p
@@ -132,39 +144,42 @@ const Hero = ({ setActiveSection }: HeroProps) => {
                 variants={itemVariants}
                 className="flex flex-wrap gap-3"
               >
-            <motion.a
-              href="https://github.com/Essashah"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-primary"
-              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
-            >
-              <FaGithub className="text-base" />
-              <span>GitHub</span>
-            </motion.a>
+                <MagneticButton>
+                  <motion.a
+                    href="https://github.com/Essashah"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-primary"
+                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                  >
+                    <FaGithub className="text-base" />
+                    <span>GitHub</span>
+                  </motion.a>
+                </MagneticButton>
 
-            <motion.a
-              href="https://www.linkedin.com/in/essa-shah-7a0a5a294"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-secondary"
-              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
-            >
-              <FaLinkedin className="text-base" />
-              <span>LinkedIn</span>
-            </motion.a>
+                <MagneticButton>
+                  <motion.a
+                    href="https://www.linkedin.com/in/essa-shah-7a0a5a294"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-secondary"
+                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                  >
+                    <FaLinkedin className="text-base" />
+                    <span>LinkedIn</span>
+                  </motion.a>
+                </MagneticButton>
 
-            <motion.a
-              href="mailto:essashah10@gmail.com"
-              className="button-secondary"
-              whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-              whileTap={shouldReduceMotion ? undefined : { y: 0 }}
-            >
-              <FaEnvelope className="text-base" />
-              <span>Email</span>
-            </motion.a>
+                <MagneticButton>
+                  <motion.a
+                    href="mailto:essashah10@gmail.com"
+                    className="button-secondary"
+                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                  >
+                    <FaEnvelope className="text-base" />
+                    <span>Email</span>
+                  </motion.a>
+                </MagneticButton>
               </motion.div>
 
               <motion.div variants={itemVariants} className="pt-2">
@@ -195,7 +210,7 @@ const Hero = ({ setActiveSection }: HeroProps) => {
             <motion.aside variants={itemVariants} className="space-y-4 lg:pt-6">
               <div className="surface-card p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-200">Current Focus</p>
-                <p className="mt-2 text-xl font-semibold text-slate-100" style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
+                <p className="mt-2 text-xl font-semibold text-slate-100" style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}>
                   Multi-model Systems + Guardrails
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">
@@ -205,17 +220,25 @@ const Hero = ({ setActiveSection }: HeroProps) => {
               </div>
 
               <div className="surface-card p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Spotlight Stack</p>
-                <div className="mt-4 grid grid-cols-4 gap-3">
-                  {spotlightStack.map((stack) => (
-                    <div key={stack.name} className="icon-tile h-14 w-14">
-                      <img src={stack.iconPath} alt={stack.name} className="h-9 w-9 object-contain" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Delivery Principles</p>
+                <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-slate-300">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-blue-300">•</span>
+                    <span>Ship models behind reliable, observable APIs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-blue-300">•</span>
+                    <span>Design for compliance and auditability from day one</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-blue-300">•</span>
+                    <span>Measure impact, not just accuracy</span>
+                  </li>
+                </ul>
               </div>
             </motion.aside>
           </div>
+
         </motion.div>
       </div>
     </section>
@@ -223,4 +246,3 @@ const Hero = ({ setActiveSection }: HeroProps) => {
 }
 
 export default Hero
-

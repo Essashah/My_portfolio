@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,9 +8,13 @@ import Skills from './components/Skills'
 import Contact from './components/Contact'
 import ScrollProgress from './components/ScrollProgress'
 import ScrollToTop from './components/ScrollToTop'
+import CustomCursor from './components/effects/CustomCursor'
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero')
+  const { scrollYProgress } = useScroll()
+  const blobShiftA = useTransform(scrollYProgress, [0, 1], [0, -120])
+  const blobShiftB = useTransform(scrollYProgress, [0, 1], [0, 140])
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-transparent">
@@ -27,10 +31,11 @@ function App() {
           animate={{ opacity: [0.55, 0.95, 0.55] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div className="ambient-blob-a" />
-        <div className="ambient-blob-b" />
+        <motion.div className="ambient-blob-a" style={{ y: blobShiftA }} />
+        <motion.div className="ambient-blob-b" style={{ y: blobShiftB }} />
         <div className="pointer-events-none fixed bottom-[-240px] left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(58,119,255,0.28),transparent_65%)] blur-3xl" />
 
+        <CustomCursor />
         <Navigation activeSection={activeSection} setActiveSection={setActiveSection} />
 
         <motion.main

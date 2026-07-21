@@ -1,7 +1,9 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
+import RevealText from './effects/RevealText'
+import MagneticButton from './effects/MagneticButton'
 
 interface ContactProps {
   setActiveSection: (section: string) => void
@@ -9,6 +11,11 @@ interface ContactProps {
 
 const Contact = ({ setActiveSection }: ContactProps) => {
   const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  const formParallax = useTransform(scrollYProgress, [0, 1], [26, -26])
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,7 +75,9 @@ const Contact = ({ setActiveSection }: ContactProps) => {
         >
           <motion.div variants={itemVariants} className="mb-14 text-center">
             <p className="section-kicker">Contact</p>
-            <h2 className="section-title">Let&apos;s build something impactful</h2>
+            <h2 className="section-title">
+              <RevealText text="Let's build something impactful" />
+            </h2>
             <p className="section-subtitle mx-auto">
               Open to AI product engineering, platform work, and high-value ML delivery projects.
             </p>
@@ -134,7 +143,7 @@ const Contact = ({ setActiveSection }: ContactProps) => {
               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants} style={{ y: formParallax }}>
               <form onSubmit={handleSubmit} className="surface-card relative space-y-5 p-6 md:p-8">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,143,255,0.15),transparent_35%)]" />
                 <div>
@@ -167,14 +176,15 @@ const Contact = ({ setActiveSection }: ContactProps) => {
                     className="premium-input resize-none"
                   />
                 </div>
-                <motion.button
-                  type="submit"
-                  className="button-primary w-full"
-                  whileHover={{ y: -1 }}
-                  whileTap={{ y: 0 }}
-                >
-                  Send Message
-                </motion.button>
+                <MagneticButton className="w-full" strength={0.15}>
+                  <motion.button
+                    type="submit"
+                    className="button-primary w-full"
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Send Message
+                  </motion.button>
+                </MagneticButton>
               </form>
             </motion.div>
           </div>

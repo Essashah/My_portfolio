@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import AnimatedCounter from './AnimatedCounter'
+import RevealText from './effects/RevealText'
 
 interface AboutProps {
   setActiveSection: (section: string) => void
@@ -8,6 +9,11 @@ interface AboutProps {
 
 const About = ({ setActiveSection }: AboutProps) => {
   const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  const imageParallax = useTransform(scrollYProgress, [0, 1], [30, -30])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +62,7 @@ const About = ({ setActiveSection }: AboutProps) => {
           <motion.div variants={itemVariants} className="text-center">
             <p className="section-kicker">About</p>
             <h2 className="section-title">
-              Engineering AI products with precision
+              <RevealText text="Engineering AI products with precision" />
             </h2>
             <p className="section-subtitle mx-auto">
               Product thinking, production-grade architecture, and ML rigor from experimentation
@@ -66,7 +72,7 @@ const About = ({ setActiveSection }: AboutProps) => {
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={itemVariants} className="order-2 md:order-1">
-              <div className="relative">
+              <motion.div className="relative" style={{ y: imageParallax }}>
                   <motion.div
                     className="mx-auto h-72 w-72 rounded-3xl border border-[rgba(141,175,255,0.25)] bg-[rgba(14,22,38,0.88)] p-2 shadow-[0_20px_56px_-32px_rgba(91,140,255,0.72)] md:h-80 md:w-80"
                     whileHover={{ scale: 1.05 }}
@@ -93,7 +99,7 @@ const About = ({ setActiveSection }: AboutProps) => {
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
                   />
-              </div>
+              </motion.div>
             </motion.div>
 
             <motion.div variants={itemVariants} className="order-1 md:order-2 space-y-6">

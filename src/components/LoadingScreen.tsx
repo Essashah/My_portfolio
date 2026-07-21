@@ -73,7 +73,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
               </div>
               <h1
                 className="text-2xl font-semibold tracking-tight text-slate-100"
-                style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+                style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}
               >
                 Essa Shah
               </h1>

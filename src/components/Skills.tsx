@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { techIcons } from '../data/techIcons'
+import TiltCard from './effects/TiltCard'
+import RevealText from './effects/RevealText'
 
 interface SkillsProps {
   setActiveSection: (section: string) => void
@@ -59,7 +61,7 @@ const Skills = ({ setActiveSection }: SkillsProps) => {
           <motion.div variants={itemVariants} className="mb-14 text-center">
             <p className="section-kicker">Skills</p>
             <h2 className="section-title">
-              Capability stack with full icon coverage
+              <RevealText text="Capability stack with full icon coverage" />
             </h2>
             <p className="section-subtitle mx-auto">
               Every icon from the portfolio asset library is mapped to the related delivery area.
@@ -88,42 +90,39 @@ const Skills = ({ setActiveSection }: SkillsProps) => {
                   {techIcons
                     .filter((skill) => skill.category === category.key)
                     .map((skill, skillIndex) => (
-                    <motion.div
-                      key={skill.name}
-                      variants={itemVariants}
-                      className="interactive-card rounded-xl border border-[rgba(141,175,255,0.2)] bg-[rgba(9,15,27,0.85)] p-4"
-                      whileHover={{ y: -4 }}
-                    >
-                      <div className="mb-4 flex items-center gap-3">
-                        <div className="icon-tile h-11 w-11">
-                          <img
-                            src={skill.iconPath}
-                            alt={skill.name}
-                            className="h-8 w-8 object-contain"
-                            loading="lazy"
-                            decoding="async"
+                    <motion.div key={skill.name} variants={itemVariants}>
+                      <TiltCard className="h-full rounded-xl border border-[rgba(141,175,255,0.2)] bg-[rgba(9,15,27,0.85)] p-4">
+                        <div className="mb-4 flex items-center gap-3">
+                          <div className="icon-tile h-11 w-11">
+                            <img
+                              src={skill.iconPath}
+                              alt={skill.name}
+                              className="h-8 w-8 object-contain"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h4 className="truncate text-sm font-semibold text-slate-100 md:text-base">
+                              {skill.name}
+                            </h4>
+                            <p className="text-xs text-slate-400">{skill.note}</p>
+                          </div>
+                        </div>
+                        <div className="h-2.5 overflow-hidden rounded-full bg-[rgba(26,40,64,0.78)]">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            viewport={{ once: true, margin: '-50px' }}
+                            transition={{
+                              duration: 0.9,
+                              delay: categoryIndex * 0.08 + skillIndex * 0.02,
+                              ease: 'easeOut',
+                            }}
+                            className="h-full rounded-full bg-gradient-to-r from-[#4f8fff] via-[#7a5cff] to-[#22d3ee]"
                           />
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <h4 className="truncate text-sm font-semibold text-slate-100 md:text-base">
-                            {skill.name}
-                          </h4>
-                          <p className="text-xs text-slate-400">{skill.note}</p>
-                        </div>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-[rgba(26,40,64,0.78)]">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true, margin: '-50px' }}
-                          transition={{
-                            duration: 0.9,
-                            delay: categoryIndex * 0.08 + skillIndex * 0.02,
-                            ease: 'easeOut',
-                          }}
-                          className="h-full rounded-full bg-gradient-to-r from-[#4f8fff] via-[#7a5cff] to-[#22d3ee]"
-                        />
-                      </div>
+                      </TiltCard>
                     </motion.div>
                   ))}
                 </div>

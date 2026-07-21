@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { FaBriefcase } from 'react-icons/fa'
+import TiltCard from './effects/TiltCard'
+import RevealText from './effects/RevealText'
 
 interface ExperienceProps {
   setActiveSection: (section: string) => void
@@ -8,6 +10,12 @@ interface ExperienceProps {
 
 const Experience = ({ setActiveSection }: ExperienceProps) => {
   const sectionRef = useRef<HTMLElement>(null)
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 75%', 'end 55%'],
+  })
+  const timelineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 26 })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,6 +125,16 @@ const Experience = ({ setActiveSection }: ExperienceProps) => {
     },
   }
 
+  const cardVariants = (index: number) => ({
+    hidden: { opacity: 0, x: index % 2 === 0 ? -36 : 36, y: 12 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    },
+  })
+
   return (
     <section id="experience" ref={sectionRef} className="section-shell flex items-center">
       <div className="section-container">
@@ -129,7 +147,7 @@ const Experience = ({ setActiveSection }: ExperienceProps) => {
           <motion.div variants={itemVariants} className="mb-14 text-center">
             <p className="section-kicker">Experience</p>
             <h2 className="section-title">
-              Systems designed for impact
+              <RevealText text="Systems designed for impact" />
             </h2>
             <p className="section-subtitle mx-auto">
               A delivery track record across backend engineering, computer vision,
@@ -137,39 +155,39 @@ const Experience = ({ setActiveSection }: ExperienceProps) => {
             </p>
           </motion.div>
 
-          <div className="relative space-y-6">
-            <div className="pointer-events-none absolute left-5 top-10 hidden h-[calc(100%-4rem)] w-px bg-gradient-to-b from-[#4f8fff]/70 via-[#8b5cf6]/50 to-transparent md:block" />
+          <div ref={timelineRef} className="relative space-y-6">
+            <motion.div
+              className="pointer-events-none absolute left-5 top-10 hidden h-[calc(100%-4rem)] w-px origin-top bg-gradient-to-b from-[#4f8fff] via-[#8b5cf6] to-[#22d3ee] md:block"
+              style={{ scaleY: timelineScale }}
+            />
             {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="surface-card interactive-card relative overflow-hidden p-7 md:ml-8 md:p-8"
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,143,255,0.14),transparent_35%)]" />
-                <div className="relative">
-                  <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="icon-tile h-11 w-11 text-blue-200">
-                        <FaBriefcase className="text-lg" />
+              <motion.div key={index} variants={cardVariants(index)}>
+                <TiltCard intensity={3} className="surface-card relative overflow-hidden p-7 md:ml-8 md:p-8">
+                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,143,255,0.14),transparent_35%)]" />
+                  <div className="relative">
+                    <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="icon-tile h-11 w-11 text-blue-200">
+                          <FaBriefcase className="text-lg" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-slate-100 md:text-2xl">{exp.title}</h3>
+                          <p className="font-medium text-blue-200">{exp.company}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-slate-100 md:text-2xl">{exp.title}</h3>
-                        <p className="font-medium text-blue-200">{exp.company}</p>
-                      </div>
+                      <span className="mt-2 premium-chip md:mt-0">{exp.period}</span>
                     </div>
-                    <span className="mt-2 premium-chip md:mt-0">{exp.period}</span>
+                    <p className="mb-4 text-slate-300">{exp.description}</p>
+                    <ul className="space-y-2">
+                      {exp.achievements.map((achievement, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-slate-300">
+                          <span className="mt-1 text-blue-300">•</span>
+                          <span>{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="mb-4 text-slate-300">{exp.description}</p>
-                  <ul className="space-y-2">
-                    {exp.achievements.map((achievement, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-slate-300">
-                        <span className="mt-1 text-blue-300">•</span>
-                        <span>{achievement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
