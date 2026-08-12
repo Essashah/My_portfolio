@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FaArrowDown, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
 import ParticleField from './effects/ParticleField'
 import MagneticButton from './effects/MagneticButton'
+import { handleSpotlight } from '../lib/spotlight'
 
 interface HeroProps {
   setActiveSection: (section: string) => void
@@ -208,7 +209,7 @@ const Hero = ({ setActiveSection }: HeroProps) => {
             </div>
 
             <motion.aside variants={itemVariants} className="space-y-4 lg:pt-6">
-              <div className="surface-card p-5">
+              <div className="spotlight-card surface-card p-5" onMouseMove={handleSpotlight}>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-200">Current Focus</p>
                 <p className="mt-2 text-xl font-semibold text-slate-100" style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}>
                   Multi-model Systems + Guardrails
@@ -219,7 +220,7 @@ const Hero = ({ setActiveSection }: HeroProps) => {
                 </p>
               </div>
 
-              <div className="surface-card p-5">
+              <div className="spotlight-card surface-card p-5" onMouseMove={handleSpotlight}>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Delivery Principles</p>
                 <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-slate-300">
                   <li className="flex items-start gap-2">

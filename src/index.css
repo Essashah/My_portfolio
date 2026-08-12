@@ -145,6 +145,49 @@
     border-color: var(--line-strong);
   }
 
+  /* Cursor-following glow. Requires JS to set --spot-x / --spot-y (see lib/spotlight.ts). */
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(122, 168, 255, 0.16),
+      transparent 62%
+    );
+    z-index: 1;
+  }
+
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+
+  .tech-logo {
+    filter: grayscale(0.35);
+    opacity: 0.9;
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .group\/tilt:hover .tech-logo,
+  .tech-logo:hover {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spotlight-card::before {
+      display: none;
+    }
+    .tech-logo {
+      transition: none;
+    }
+  }
+
   .button-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all duration-300 focus-visible:outline-none focus-visible:ring-2;
     background: linear-gradient(105deg, #4f8fff, #7a5cff);

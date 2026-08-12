@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react'
 import { techIcons } from '../data/techIcons'
 import TiltCard from './effects/TiltCard'
 import RevealText from './effects/RevealText'
+import TechLogo from './TechLogo'
+import { handleSpotlight } from '../lib/spotlight'
 
 interface SkillsProps {
   setActiveSection: (section: string) => void
@@ -61,10 +63,10 @@ const Skills = ({ setActiveSection }: SkillsProps) => {
           <motion.div variants={itemVariants} className="mb-14 text-center">
             <p className="section-kicker">Skills</p>
             <h2 className="section-title">
-              <RevealText text="Capability stack with full icon coverage" />
+              <RevealText text="The stack behind production systems" />
             </h2>
             <p className="section-subtitle mx-auto">
-              Every icon from the portfolio asset library is mapped to the related delivery area.
+              Tools I use across modeling, backend, cloud, and data — grouped by where they deliver value.
             </p>
           </motion.div>
 
@@ -73,7 +75,8 @@ const Skills = ({ setActiveSection }: SkillsProps) => {
               <motion.div
                 key={categoryIndex}
                 variants={itemVariants}
-                className="surface-card p-6 md:p-7"
+                onMouseMove={handleSpotlight}
+                className="spotlight-card surface-card p-6 md:p-7"
               >
                 <motion.div className="mb-6 flex items-center gap-4">
                   <span className="icon-tile text-2xl">{category.icon}</span>
@@ -94,13 +97,7 @@ const Skills = ({ setActiveSection }: SkillsProps) => {
                       <TiltCard className="h-full rounded-xl border border-[rgba(141,175,255,0.2)] bg-[rgba(9,15,27,0.85)] p-4">
                         <div className="mb-4 flex items-center gap-3">
                           <div className="icon-tile h-11 w-11">
-                            <img
-                              src={skill.iconPath}
-                              alt={skill.name}
-                              className="h-8 w-8 object-contain"
-                              loading="lazy"
-                              decoding="async"
-                            />
+                            <TechLogo name={skill.name} src={skill.iconPath} className="h-8 w-8" />
                           </div>
                           <div className="min-w-0 flex-1">
                             <h4 className="truncate text-sm font-semibold text-slate-100 md:text-base">
