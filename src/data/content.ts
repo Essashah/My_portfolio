@@ -24,6 +24,8 @@ import {
   SiTensorflow,
   SiTypescript,
 } from 'react-icons/si'
+import { LuBrainCircuit } from 'react-icons/lu'
+import { TbCloudComputing, TbMessageLanguage } from 'react-icons/tb'
 
 export const profile = {
   name: 'Essa Shah',
@@ -178,6 +180,8 @@ export interface Tool {
   icon?: IconType
   /** Brand colour. Omitted for near-black marks, which use the text colour. */
   color?: string
+  /** Full-colour logo file, used instead of `icon` where one exists. */
+  src?: string
 }
 
 export const toolkit: { group: string; tools: Tool[] }[] = [
@@ -189,9 +193,9 @@ export const toolkit: { group: string; tools: Tool[] }[] = [
       { name: 'TensorFlow', icon: SiTensorflow, color: '#FF6F00' },
       { name: 'OpenCV', icon: SiOpencv, color: '#6E5BFF' },
       { name: 'scikit-learn', icon: SiScikitlearn, color: '#F7931E' },
-      { name: 'Deep Learning' },
-      { name: 'NLP' },
-      { name: 'Matplotlib' },
+      { name: 'Deep Learning', icon: LuBrainCircuit, color: '#A78BFA' },
+      { name: 'NLP', icon: TbMessageLanguage, color: '#2DD4BF' },
+      { name: 'Matplotlib', src: '/icons/Matplotlib.svg' },
     ],
   },
   {
@@ -209,7 +213,7 @@ export const toolkit: { group: string; tools: Tool[] }[] = [
     group: 'Cloud & DevOps',
     tools: [
       { name: 'AWS', icon: SiAmazonaws, color: '#FF9900' },
-      { name: 'AWS Bedrock' },
+      { name: 'AWS Bedrock', icon: TbCloudComputing, color: '#01A88D' },
       { name: 'Google Cloud', icon: SiGooglecloud, color: '#4285F4' },
       { name: 'Docker', icon: SiDocker, color: '#2496ED' },
       { name: 'Kubernetes', icon: SiKubernetes, color: '#326CE5' },
@@ -235,4 +239,4 @@ export const toolkit: { group: string; tools: Tool[] }[] = [
   },
 ]
 
-export const marqueeTools = toolkit.flatMap((g) => g.tools).filter((t) => t.icon)
+export const marqueeTools = toolkit.flatMap((g) => g.tools).filter((t) => t.icon || t.src)
