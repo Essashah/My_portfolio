@@ -1,245 +1,103 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { FaArrowDown, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa'
-import ParticleField from './effects/ParticleField'
-import MagneticButton from './effects/MagneticButton'
-import { handleSpotlight } from '../lib/spotlight'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+import { hero, profile } from '../data/content'
+import { scrollToId } from '../lib/scroll'
+import DotField from './effects/DotField'
+import LocalTime from './ui/LocalTime'
+import Magnetic from './ui/Magnetic'
+import { RevealLines } from './ui/Reveal'
 
-interface HeroProps {
-  setActiveSection: (section: string) => void
-}
+const EASE = [0.22, 1, 0.36, 1] as const
 
-const ROLES = ['AI Systems', 'Backend Platforms', 'Vision Pipelines', 'GenAI Products']
+const Hero = ({ ready }: { ready: boolean }) => {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  const lift = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
-const Hero = ({ setActiveSection }: HeroProps) => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const shouldReduceMotion = useReducedMotion()
-  const [roleIndex, setRoleIndex] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect()
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          setActiveSection('hero')
-        }
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [setActiveSection])
-
-  useEffect(() => {
-    if (shouldReduceMotion) return
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % ROLES.length)
-    }, 2600)
-    return () => clearInterval(interval)
-  }, [shouldReduceMotion])
-
-  const containerVariants = shouldReduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }
-    : {
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.12,
-            delayChildren: 0.1,
-          },
-        },
-      }
-
-  const itemVariants = shouldReduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }
-    : {
-        hidden: { opacity: 0, y: 16 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.45, ease: 'easeOut' },
-        },
-      }
-
-  const scrollToAbout = () => {
-    const element = document.getElementById('about')
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
+  const meta = [
+    { k: 'Role', v: profile.role },
+    { k: 'Based in', v: profile.location },
+    { k: 'Local time', v: <LocalTime /> },
+    {
+      k: 'Status',
+      v: (
+        <span className="inline-flex items-center gap-2">
+          <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+          {hero.status}
+        </span>
+      ),
+    },
+  ]
 
   return (
-    <section id="hero" ref={sectionRef} className="section-shell relative flex items-center pt-36">
-      <div className="section-container">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="section-panel relative overflow-hidden"
+    <section id="top" ref={ref} className="relative flex min-h-[100svh] flex-col overflow-hidden">
+      <motion.div
+        className="absolute inset-0 [mask-image:radial-gradient(ellipse_80%_70%_at_68%_42%,black_25%,transparent_78%)]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: ready ? 1 : 0 }}
+        transition={{ duration: 1.6, delay: 0.3 }}
+      >
+        <DotField />
+      </motion.div>
+
+      <div className="shell relative flex flex-1 flex-col pb-10 pt-28 md:pb-12 md:pt-32">
+        <motion.dl
+          className="grid grid-cols-2 gap-x-6 gap-y-4 border-t hairline pt-5 md:grid-cols-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: ready ? 1 : 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
         >
-          <ParticleField />
-
-          {!shouldReduceMotion && (
-            <>
-              <motion.div
-                className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[#4f8fff]/30 blur-3xl"
-                animate={{ x: [0, 14, 0], y: [0, 8, 0], opacity: [0.45, 0.6, 0.45] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <motion.div
-                className="pointer-events-none absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-[#8b5cf6]/25 blur-3xl"
-                animate={{ x: [0, -16, 0], y: [0, -10, 0], opacity: [0.35, 0.52, 0.35] }}
-                transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </>
-          )}
-          <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(79,143,255,0.18),transparent_45%)]" />
-
-          <div className="relative grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="space-y-8">
-              <motion.div variants={itemVariants}>
-                <motion.div
-                  className="premium-chip"
-                >
-                  AI Engineer - Builder - Research Mindset
-                </motion.div>
-              </motion.div>
-
-              <motion.h1
-                variants={itemVariants}
-                className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl"
-                style={{ fontFamily: "'Syne', 'Outfit', sans-serif", letterSpacing: '-0.04em' }}
-              >
-                <span className="shimmer-text">I Build Production</span>
-                <span className="block h-[1.25em] overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={ROLES[roleIndex]}
-                      className="gradient-text inline-block"
-                      initial={shouldReduceMotion ? { opacity: 0 } : { y: '100%', opacity: 0 }}
-                      animate={shouldReduceMotion ? { opacity: 1 } : { y: '0%', opacity: 1 }}
-                      exit={shouldReduceMotion ? { opacity: 0 } : { y: '-100%', opacity: 0 }}
-                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      {ROLES[roleIndex]}.
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </motion.h1>
-
-              <motion.p
-                variants={itemVariants}
-                className="max-w-3xl text-lg leading-relaxed text-slate-300 md:text-xl"
-              >
-                From model experimentation to secure APIs and scalable cloud runtimes, I deliver
-                AI products with reliability, observability, and business impact built in.
-              </motion.p>
-
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-wrap gap-3"
-              >
-                <MagneticButton>
-                  <motion.a
-                    href="https://github.com/Essashah"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="button-primary"
-                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
-                  >
-                    <FaGithub className="text-base" />
-                    <span>GitHub</span>
-                  </motion.a>
-                </MagneticButton>
-
-                <MagneticButton>
-                  <motion.a
-                    href="https://www.linkedin.com/in/essa-shah-7a0a5a294"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="button-secondary"
-                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
-                  >
-                    <FaLinkedin className="text-base" />
-                    <span>LinkedIn</span>
-                  </motion.a>
-                </MagneticButton>
-
-                <MagneticButton>
-                  <motion.a
-                    href="mailto:essashah10@gmail.com"
-                    className="button-secondary"
-                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
-                  >
-                    <FaEnvelope className="text-base" />
-                    <span>Email</span>
-                  </motion.a>
-                </MagneticButton>
-              </motion.div>
-
-              <motion.div variants={itemVariants} className="pt-2">
-                <div className="mb-4 flex flex-wrap gap-2">
-                  <span className="premium-chip">GenAI Workflow Design</span>
-                  <span className="premium-chip">Backend + MLOps Delivery</span>
-                </div>
-                <motion.button
-                  onClick={scrollToAbout}
-                  className="group inline-flex items-center gap-2 rounded-full border border-[rgba(141,175,255,0.28)] bg-[rgba(10,17,30,0.72)] px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-[rgba(141,175,255,0.48)] hover:text-white"
-                  whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-                >
-                  <span>Scroll to explore</span>
-                  <motion.div
-                    animate={shouldReduceMotion ? undefined : { y: [0, 3, 0] }}
-                    transition={
-                      shouldReduceMotion
-                        ? undefined
-                        : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }
-                    }
-                  >
-                    <FaArrowDown />
-                  </motion.div>
-                </motion.button>
-              </motion.div>
+          {meta.map((item) => (
+            <div key={item.k}>
+              <dt className="label text-faint">{item.k}</dt>
+              <dd className="mt-1.5 text-[13px] text-paper/90">{item.v}</dd>
             </div>
+          ))}
+        </motion.dl>
 
-            <motion.aside variants={itemVariants} className="space-y-4 lg:pt-6">
-              <div className="spotlight-card surface-card p-5" onMouseMove={handleSpotlight}>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-200">Current Focus</p>
-                <p className="mt-2 text-xl font-semibold text-slate-100" style={{ fontFamily: "'Syne', 'Outfit', sans-serif" }}>
-                  Multi-model Systems + Guardrails
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                  Deploying practical AI in regulated environments with resilient architecture and
-                  measurable outcomes.
-                </p>
+        <motion.div className="mt-auto" style={{ y: lift, opacity: fade }}>
+          {ready && (
+            <h1 className="display pt-16 text-[clamp(3.1rem,10.4vw,10.5rem)]">
+              <RevealLines
+                immediate
+                lines={[
+                  'Engineering AI',
+                  <>
+                    that works <span className="serif italic tracking-[-0.02em] text-accent">beyond</span>
+                  </>,
+                  <span className="serif italic tracking-[-0.02em]">the demo.</span>,
+                ]}
+              />
+            </h1>
+          )}
+
+          <motion.div
+            className="mt-10 grid gap-8 border-t hairline pt-6 md:mt-14 md:grid-cols-12"
+            initial={{ opacity: 0, y: 16 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
+            transition={{ duration: 1, ease: EASE, delay: 0.55 }}
+          >
+            <p className="max-w-md text-[15px] leading-relaxed text-muted md:col-span-6 md:text-base">
+              <span className="text-paper">I’m Essa</span> — {hero.intro}
+            </p>
+            <div className="flex flex-col justify-between gap-6 md:col-span-6 md:items-end">
+              <p className="label md:text-right">{hero.current}</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <button onClick={() => scrollToId('experience')} className="pill-solid">
+                    View experience
+                    <span aria-hidden>↘</span>
+                  </button>
+                </Magnetic>
+                <Magnetic>
+                  <a href={`mailto:${profile.email}`} className="pill">
+                    Get in touch
+                  </a>
+                </Magnetic>
               </div>
-
-              <div className="spotlight-card surface-card p-5" onMouseMove={handleSpotlight}>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Delivery Principles</p>
-                <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-slate-300">
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-blue-300">•</span>
-                    <span>Ship models behind reliable, observable APIs</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-blue-300">•</span>
-                    <span>Design for compliance and auditability from day one</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-blue-300">•</span>
-                    <span>Measure impact, not just accuracy</span>
-                  </li>
-                </ul>
-              </div>
-            </motion.aside>
-          </div>
-
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

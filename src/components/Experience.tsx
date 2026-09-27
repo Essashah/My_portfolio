@@ -1,201 +1,94 @@
-import { motion, useScroll, useSpring } from 'framer-motion'
-import { useEffect, useRef } from 'react'
-import { FaBriefcase } from 'react-icons/fa'
-import TiltCard from './effects/TiltCard'
-import RevealText from './effects/RevealText'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
+import { experience } from '../data/content'
+import { Fade, RevealLines } from './ui/Reveal'
+import SectionHeader from './ui/SectionHeader'
 
-interface ExperienceProps {
-  setActiveSection: (section: string) => void
-}
+const EASE = [0.22, 1, 0.36, 1] as const
 
-const Experience = ({ setActiveSection }: ExperienceProps) => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const timelineRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 75%', 'end 55%'],
-  })
-  const timelineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 26 })
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect()
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          setActiveSection('experience')
-        }
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [setActiveSection])
-
-  const experiences = [
-    {
-      title: 'AWS GenAI Developer',
-      company: 'Appbank',
-      period: 'Feb 2026 - Present',
-      description:
-        'Designed and deployed compliant GenAI systems for regulated banking workflows.',
-      achievements: [
-        'Designed orchestration agents with AWS Bedrock Agents using Titan and Claude models, aligned with AWS Well-Architected Framework (AI/ML Lens)',
-        'Built RAG systems with AWS Knowledge Bases over FCA and PRA rulebooks for legally compliant outputs',
-        'Implemented AWS Guardrails for Responsible AI controls, PII filtering, and fine-grained access control',
-        'Delivered in Agile sprints with Jira, collaborating with senior engineers under strict compliance standards',
-      ],
-    },
-    {
-      title: 'Full-Stack AI Backend Engineer',
-      company: 'Oont',
-      period: 'Sep 2025 - Feb 2026',
-      description: 'Built and optimized scalable backend systems for AI-driven product delivery.',
-      achievements: [
-        'Built backend systems using Node.js, Express.js, NestJS, PostgreSQL, and Redis',
-        'Refactored legacy services into a unified and scalable backend architecture',
-        'Improved API performance, reliability, and deployment workflows',
-        'Collaborated with frontend, AI, and product teams in Agile environments',
-      ],
-    },
-    {
-      title: 'Computer Vision Engineer (Sports Analytics)',
-      company: 'Scout-Me Online',
-      period: 'Sep 2025 - Feb 2026',
-      description: 'Built real-time CV systems for low-latency sports analytics.',
-      achievements: [
-        'Designed pipelines for tracking fast-moving sports objects in real time',
-        'Built deep-learning tracking systems optimized for low-latency inference',
-        'Developed automated video analytics tools for instant gameplay insights',
-      ],
-    },
-    {
-      title: 'AI Systems Engineer (Peacebuilding & Data Infrastructure)',
-      company: 'ICAN Peacebuilding Network (via PAIMAN Alumni Trust)',
-      period: '2023 - 2024',
-      description:
-        'Architected reliable and ethical data infrastructure for distributed peacebuilding operations.',
-      achievements: [
-        'Architected secure databases to track interventions and outcomes across distributed regions',
-        'Designed schemas prioritizing integrity, auditability, and ethical data handling',
-        'Built foundational data layers for future predictive analytics and impact assessment',
-        'Developed systems where data accuracy directly affected real-world decisions',
-      ],
-    },
-    {
-      title: 'Programming & Technology Instructor (Volunteer Leadership Role)',
-      company: 'TOLANA - PAIMAN Alumni Trust, Pakistan',
-      period: '2021 - 2023',
-      description: 'Led technical education programs for low-resource and conflict-affected regions.',
-      achievements: [
-        'Designed and delivered programming curricula for youth in low-resource regions',
-        'Taught Python, web development, and introductory AI under severe infrastructure constraints',
-        'Built resilient learning workflows for unreliable connectivity and limited hardware',
-        'Mentored students on beginner full-stack and machine learning projects',
-      ],
-    },
-    {
-      title: 'Web Development Instructor',
-      company: 'Qadims Lumiere School',
-      period: '2020 - 2021',
-      description: 'Taught web development and foundational programming with practical project mentorship.',
-      achievements: [
-        'Taught web development, Python fundamentals, and introductory AI concepts',
-        'Mentored students on full-stack and beginner machine learning projects',
-      ],
-    },
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  }
-
-  const cardVariants = (index: number) => ({
-    hidden: { opacity: 0, x: index % 2 === 0 ? -36 : 36, y: 12 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-    },
-  })
+const Experience = () => {
+  const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section id="experience" ref={sectionRef} className="section-shell flex items-center">
-      <div className="section-container">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          <motion.div variants={itemVariants} className="mb-14 text-center">
-            <p className="section-kicker">Experience</p>
-            <h2 className="section-title">
-              <RevealText text="Systems designed for impact" />
-            </h2>
-            <p className="section-subtitle mx-auto">
-              A delivery track record across backend engineering, computer vision,
-              and production ML integration.
-            </p>
-          </motion.div>
+    <section id="experience" className="shell py-28 md:py-40">
+      <SectionHeader index="03" label="Experience" aside="2020 — Present" />
 
-          <div ref={timelineRef} className="relative space-y-6">
-            <motion.div
-              className="pointer-events-none absolute left-5 top-10 hidden h-[calc(100%-4rem)] w-px origin-top bg-gradient-to-b from-[#4f8fff] via-[#8b5cf6] to-[#22d3ee] md:block"
-              style={{ scaleY: timelineScale }}
-            />
-            {experiences.map((exp, index) => (
-              <motion.div key={index} variants={cardVariants(index)}>
-                <TiltCard intensity={3} className="surface-card relative overflow-hidden p-7 md:ml-8 md:p-8">
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,143,255,0.14),transparent_35%)]" />
-                  <div className="relative">
-                    <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="icon-tile h-11 w-11 text-blue-200">
-                          <FaBriefcase className="text-lg" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold text-slate-100 md:text-2xl">{exp.title}</h3>
-                          <p className="font-medium text-blue-200">{exp.company}</p>
-                        </div>
-                      </div>
-                      <span className="mt-2 premium-chip md:mt-0">{exp.period}</span>
-                    </div>
-                    <p className="mb-4 text-slate-300">{exp.description}</p>
-                    <ul className="space-y-2">
-                      {exp.achievements.map((achievement, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-slate-300">
-                          <span className="mt-1 text-blue-300">•</span>
-                          <span>{achievement}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </TiltCard>
-              </motion.div>
-            ))}
+      <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12">
+        <div className="md:col-span-4">
+          <div className="md:sticky md:top-32">
+            <h2 className="display text-[clamp(2.5rem,6vw,5.5rem)]">
+              <RevealLines lines={['Where', 'I’ve', <span className="serif italic tracking-[-0.02em] text-muted">built.</span>]} />
+            </h2>
+            <Fade delay={0.1}>
+              <p className="mt-8 max-w-xs text-[15px] leading-relaxed text-muted">
+                Six roles across financial services, AI products, sports analytics, non-profit
+                infrastructure and education.
+              </p>
+            </Fade>
           </div>
-        </motion.div>
+        </div>
+
+        <ol className="border-b hairline md:col-span-8">
+          {experience.map((role, i) => {
+            const isOpen = open === i
+            return (
+              <li key={role.title + role.company} className="border-t hairline">
+                <Fade y={12} delay={i * 0.03}>
+                  <button
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    className="group grid w-full grid-cols-[1fr_auto] items-start gap-x-6 gap-y-2 py-7 text-left md:grid-cols-[11rem_1fr_auto] md:py-8"
+                  >
+                    <span className="mono col-span-2 text-[11px] uppercase tracking-[0.1em] text-faint whitespace-nowrap md:col-span-1 md:pt-2">
+                      {role.period}
+                    </span>
+                    <span>
+                      <span className="block text-xl font-medium tracking-tight transition-colors group-hover:text-accent md:text-2xl">
+                        {role.title}
+                      </span>
+                      <span className="mt-1 block text-[15px] text-muted">{role.company}</span>
+                    </span>
+                    <span
+                      aria-hidden
+                      className={`mt-1 flex h-8 w-8 items-center justify-center rounded-full border hairline text-sm transition-all duration-500 ease-out-expo ${
+                        isOpen ? 'rotate-45 border-accent bg-accent text-ink' : 'group-hover:border-paper'
+                      }`}
+                    >
+                      +
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.6, ease: EASE }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-9 md:pl-[calc(11rem+1.5rem)]">
+                          <p className="text-[15px] text-paper/90">{role.summary}</p>
+                          <ul className="mt-5 space-y-3">
+                            {role.points.map((point) => (
+                              <li key={point} className="flex gap-4 text-[15px] leading-relaxed text-muted">
+                                <span className="mt-[0.7em] h-px w-3 shrink-0 bg-accent" />
+                                {point}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Fade>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </section>
   )
 }
 
 export default Experience
-

@@ -1,207 +1,101 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import type { FormEvent } from 'react'
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
-import RevealText from './effects/RevealText'
-import MagneticButton from './effects/MagneticButton'
+import { useState } from 'react'
+import { profile } from '../data/content'
+import { scrollToId } from '../lib/scroll'
+import LocalTime from './ui/LocalTime'
+import Magnetic from './ui/Magnetic'
+import { Fade, RevealLines } from './ui/Reveal'
+import SectionHeader from './ui/SectionHeader'
 
-interface ContactProps {
-  setActiveSection: (section: string) => void
-}
+const Contact = () => {
+  const [copied, setCopied] = useState(false)
 
-const Contact = ({ setActiveSection }: ContactProps) => {
-  const sectionRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const formParallax = useTransform(scrollYProgress, [0, 1], [26, -26])
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect()
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          setActiveSection('contact')
-        }
-      }
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch {
+      window.location.href = `mailto:${profile.email}`
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [setActiveSection])
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`)
-    const body = encodeURIComponent(`${formData.message}\n\nReply to: ${formData.email}`)
-    window.location.href = `mailto:essashah10@gmail.com?subject=${subject}&body=${body}`
-    setFormData({ name: '', email: '', message: '' })
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  }
+  const links = [
+    { label: 'LinkedIn', href: profile.linkedin, external: true },
+    { label: 'GitHub', href: profile.github, external: true },
+    { label: profile.phone, href: profile.phoneHref, external: false },
+  ]
 
   return (
-    <section id="contact" ref={sectionRef} className="section-shell flex items-center">
-      <div className="section-container">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          <motion.div variants={itemVariants} className="mb-14 text-center">
-            <p className="section-kicker">Contact</p>
-            <h2 className="section-title">
-              <RevealText text="Let's build something impactful" />
-            </h2>
-            <p className="section-subtitle mx-auto">
-              Open to AI product engineering, platform work, and high-value ML delivery projects.
+    <section id="contact" className="relative overflow-hidden bg-ink-2 pt-28 md:pt-40">
+      <div className="shell">
+        <SectionHeader index="05" label="Contact" aside="Say hello" />
+
+        <h2 className="display mt-14 text-[clamp(3rem,11vw,11rem)] md:mt-20">
+          <RevealLines
+            lines={[
+              'Let’s build',
+              <>
+                something <span className="serif italic tracking-[-0.02em] text-accent">real.</span>
+              </>,
+            ]}
+          />
+        </h2>
+
+        <div className="mt-16 grid gap-10 border-t hairline pt-8 md:mt-24 md:grid-cols-12">
+          <Fade className="md:col-span-7">
+            <p className="label">Email</p>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <a
+                href={`mailto:${profile.email}`}
+                className="link-underline text-[clamp(1.5rem,3.4vw,2.75rem)] font-medium tracking-tight"
+              >
+                {profile.email}
+              </a>
+              <button onClick={copyEmail} className="pill mono text-[11px] uppercase tracking-[0.12em]" aria-live="polite">
+                {copied ? 'Copied ✓' : 'Copy'}
+              </button>
+            </div>
+            <p className="mt-6 max-w-md text-[15px] leading-relaxed text-muted">
+              Open to roles and projects in AI product engineering, platform work and production ML.
+              The more specific the problem, the better.
             </p>
-          </motion.div>
+          </Fade>
 
-          <div className="grid gap-12 md:grid-cols-2">
-            <motion.div variants={itemVariants} className="space-y-8">
-              <div className="space-y-6">
-                <div className="surface-card interactive-card flex items-start gap-4 p-6">
-                  <div className="icon-tile text-2xl text-blue-200">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div>
-                    <h3 className="mb-1 text-lg font-semibold text-slate-100">Location</h3>
-                    <p className="text-slate-300">57 Kingsley, Debden, Essex, IG10 3TU</p>
-                  </div>
-                </div>
-
-                <div className="surface-card interactive-card flex items-start gap-4 p-6">
-                  <div className="icon-tile text-2xl text-blue-200">
-                    <FaEnvelope />
-                  </div>
-                  <div>
-                    <h3 className="mb-1 text-lg font-semibold text-slate-100">Email</h3>
-                    <a href="mailto:essashah10@gmail.com" className="text-slate-300 transition-colors hover:text-blue-200">
-                      essashah10@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="surface-card interactive-card flex items-start gap-4 p-6">
-                  <div className="icon-tile text-2xl text-blue-200">
-                    <FaPhone />
-                  </div>
-                  <div>
-                    <h3 className="mb-1 text-lg font-semibold text-slate-100">Phone</h3>
-                    <p className="text-slate-300">07424906183</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-6 pt-8">
-                <motion.a
-                  href="https://github.com/Essashah"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="surface-card flex h-12 w-12 items-center justify-center rounded-full text-lg text-slate-200"
-                  whileHover={{ y: -3, scale: 1.04 }}
-                  whileTap={{ y: 0 }}
-                >
-                  <FaGithub />
-                </motion.a>
-                <motion.a
-                  href="https://www.linkedin.com/in/essa-shah-7a0a5a294"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="surface-card flex h-12 w-12 items-center justify-center rounded-full text-lg text-slate-200"
-                  whileHover={{ y: -3, scale: 1.04 }}
-                  whileTap={{ y: 0 }}
-                >
-                  <FaLinkedin />
-                </motion.a>
-              </div>
-            </motion.div>
-
-            <motion.div variants={itemVariants} style={{ y: formParallax }}>
-              <form onSubmit={handleSubmit} className="surface-card relative space-y-5 p-6 md:p-8">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,143,255,0.15),transparent_35%)]" />
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="premium-input relative"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="premium-input"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    placeholder="Your Message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
-                    rows={6}
-                    className="premium-input resize-none"
-                  />
-                </div>
-                <MagneticButton className="w-full" strength={0.15}>
-                  <motion.button
-                    type="submit"
-                    className="button-primary w-full"
-                    whileTap={{ scale: 0.98 }}
+          <Fade className="md:col-span-5" delay={0.08}>
+            <p className="label">Elsewhere</p>
+            <ul className="mt-4 border-b hairline">
+              {links.map((l) => (
+                <li key={l.label} className="border-t hairline">
+                  <a
+                    href={l.href}
+                    {...(l.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                    className="group flex items-center justify-between py-4 text-lg"
                   >
-                    Send Message
-                  </motion.button>
-                </MagneticButton>
-              </form>
-            </motion.div>
-          </div>
-
-          <motion.div
-            variants={itemVariants}
-            className="mt-16 border-t border-[rgba(141,175,255,0.2)] pt-8 text-center"
-          >
-            <p className="text-slate-400">
-              © 2024 Syed Muhammad Essa Shah. All rights reserved.
-            </p>
-          </motion.div>
-        </motion.div>
+                    {l.label}
+                    <span className="text-muted transition-transform duration-500 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent">
+                      ↗
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Fade>
+        </div>
       </div>
+
+      <footer className="shell mt-28 flex flex-col gap-4 border-t hairline py-8 md:mt-40 md:flex-row md:items-center md:justify-between">
+        <p className="label">© {new Date().getFullYear()} {profile.fullName}</p>
+        <p className="label">
+          {profile.location} · <LocalTime />
+        </p>
+        <Magnetic>
+          <button onClick={() => scrollToId('top')} className="label transition-colors hover:text-paper">
+            Back to top ↑
+          </button>
+        </Magnetic>
+      </footer>
     </section>
   )
 }
 
 export default Contact
-
