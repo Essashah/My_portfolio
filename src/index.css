@@ -226,9 +226,13 @@
 
   @media (prefers-reduced-motion: reduce) {
     .grain::after,
-    .marquee-track,
     .pulse-dot::after {
       animation: none;
+    }
+
+    /* Gentle and pausable on hover, so it keeps moving, just slower */
+    .marquee-track {
+      animation-duration: 90s;
     }
   }
 }

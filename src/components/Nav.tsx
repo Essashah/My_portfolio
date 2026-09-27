@@ -15,6 +15,7 @@ const LINKS = [
 const Nav = () => {
   const [active, setActive] = useState('')
   const [hidden, setHidden] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { scrollY } = useScroll()
 
@@ -22,6 +23,7 @@ const Nav = () => {
   useMotionValueEvent(scrollY, 'change', (y) => {
     const prev = scrollY.getPrevious() ?? 0
     setHidden(y > prev && y > 240)
+    setScrolled(y > 40)
   })
 
   useEffect(() => {
@@ -47,7 +49,11 @@ const Nav = () => {
   return (
     <>
       <motion.header
-        className="fixed inset-x-0 top-0 z-50"
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ${
+          scrolled && !open
+            ? 'border-[var(--line)] bg-[color-mix(in_srgb,var(--ink)_78%,transparent)] backdrop-blur-xl'
+            : 'border-transparent'
+        }`}
         animate={{ y: hidden && !open ? '-110%' : '0%' }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >

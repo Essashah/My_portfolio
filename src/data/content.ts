@@ -176,17 +176,19 @@ export const experience: Role[] = [
 export interface Tool {
   name: string
   icon?: IconType
+  /** Brand colour. Omitted for near-black marks, which use the text colour. */
+  color?: string
 }
 
 export const toolkit: { group: string; tools: Tool[] }[] = [
   {
     group: 'AI & Machine Learning',
     tools: [
-      { name: 'Python', icon: SiPython },
-      { name: 'PyTorch', icon: SiPytorch },
-      { name: 'TensorFlow', icon: SiTensorflow },
-      { name: 'OpenCV', icon: SiOpencv },
-      { name: 'scikit-learn', icon: SiScikitlearn },
+      { name: 'Python', icon: SiPython, color: '#4B8BBE' },
+      { name: 'PyTorch', icon: SiPytorch, color: '#EE4C2C' },
+      { name: 'TensorFlow', icon: SiTensorflow, color: '#FF6F00' },
+      { name: 'OpenCV', icon: SiOpencv, color: '#6E5BFF' },
+      { name: 'scikit-learn', icon: SiScikitlearn, color: '#F7931E' },
       { name: 'Deep Learning' },
       { name: 'NLP' },
       { name: 'Matplotlib' },
@@ -195,40 +197,40 @@ export const toolkit: { group: string; tools: Tool[] }[] = [
   {
     group: 'Backend & APIs',
     tools: [
-      { name: 'Node.js', icon: SiNodedotjs },
-      { name: 'NestJS', icon: SiNestjs },
+      { name: 'Node.js', icon: SiNodedotjs, color: '#5FA04E' },
+      { name: 'NestJS', icon: SiNestjs, color: '#E0234E' },
       { name: 'Express', icon: SiExpress },
-      { name: 'FastAPI', icon: SiFastapi },
-      { name: 'Django', icon: SiDjango },
+      { name: 'FastAPI', icon: SiFastapi, color: '#05998B' },
+      { name: 'Django', icon: SiDjango, color: '#44B78B' },
       { name: 'Flask', icon: SiFlask },
     ],
   },
   {
     group: 'Cloud & DevOps',
     tools: [
-      { name: 'AWS', icon: SiAmazonaws },
+      { name: 'AWS', icon: SiAmazonaws, color: '#FF9900' },
       { name: 'AWS Bedrock' },
-      { name: 'Google Cloud', icon: SiGooglecloud },
-      { name: 'Docker', icon: SiDocker },
-      { name: 'Kubernetes', icon: SiKubernetes },
+      { name: 'Google Cloud', icon: SiGooglecloud, color: '#4285F4' },
+      { name: 'Docker', icon: SiDocker, color: '#2496ED' },
+      { name: 'Kubernetes', icon: SiKubernetes, color: '#326CE5' },
     ],
   },
   {
     group: 'Data',
     tools: [
-      { name: 'PostgreSQL', icon: SiPostgresql },
-      { name: 'Redis', icon: SiRedis },
-      { name: 'MongoDB', icon: SiMongodb },
+      { name: 'PostgreSQL', icon: SiPostgresql, color: '#4169E1' },
+      { name: 'Redis', icon: SiRedis, color: '#FF4438' },
+      { name: 'MongoDB', icon: SiMongodb, color: '#47A248' },
     ],
   },
   {
     group: 'Frontend',
     tools: [
-      { name: 'TypeScript', icon: SiTypescript },
-      { name: 'JavaScript', icon: SiJavascript },
-      { name: 'React', icon: SiReact },
+      { name: 'TypeScript', icon: SiTypescript, color: '#3178C6' },
+      { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
+      { name: 'React', icon: SiReact, color: '#61DAFB' },
       { name: 'Next.js', icon: SiNextdotjs },
-      { name: 'Tailwind CSS', icon: SiTailwindcss },
+      { name: 'Tailwind CSS', icon: SiTailwindcss, color: '#06B6D4' },
     ],
   },
 ]

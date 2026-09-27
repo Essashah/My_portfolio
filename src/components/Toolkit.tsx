@@ -21,7 +21,7 @@ const Toolkit = () => (
               aria-hidden={i >= marqueeTools.length}
               className="group flex items-center gap-3 px-8 text-muted transition-colors duration-300 hover:text-paper md:px-12"
             >
-              <Icon className="h-7 w-7 md:h-8 md:w-8" />
+              <Icon className="h-7 w-7 transition-transform duration-500 ease-out-expo group-hover:scale-110 md:h-8 md:w-8" style={{ color: tool.color }} />
               <span className="whitespace-nowrap text-xl tracking-tight md:text-2xl">{tool.name}</span>
             </span>
           )
@@ -36,7 +36,7 @@ const Toolkit = () => (
           <ul className="mt-5 space-y-2.5">
             {g.tools.map((t) => (
               <li key={t.name} className="flex items-center gap-2.5 text-[15px] text-paper">
-                {t.icon ? <t.icon className="h-3.5 w-3.5 text-faint" /> : <span className="h-3.5 w-3.5 text-center text-[10px] leading-[14px] text-faint">◦</span>}
+                {t.icon ? <t.icon className="h-3.5 w-3.5 text-faint" style={{ color: t.color }} /> : <span className="h-3.5 w-3.5 text-center text-[10px] leading-[14px] text-faint">◦</span>}
                 {t.name}
               </li>
             ))}
