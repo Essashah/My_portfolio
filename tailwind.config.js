@@ -4,11 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: '#0b0b0c', 2: '#111113', 3: '#18181b' },
-        paper: '#ededeb',
-        muted: '#8b8b90',
-        faint: '#5b5b61',
-        accent: '#ff5a1f',
+        ink: { DEFAULT: 'var(--ink)', 2: 'var(--ink-2)', 3: 'var(--ink-3)' },
+        paper: 'var(--paper)',
+        muted: 'var(--muted)',
+        faint: 'var(--faint)',
+        accent: 'var(--accent)',
+        'on-accent': 'var(--on-accent)',
       },
       transitionTimingFunction: {
         'out-expo': 'cubic-bezier(0.22, 1, 0.36, 1)',

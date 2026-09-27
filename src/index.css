@@ -5,17 +5,62 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --ink: #0b0b0c;
-    --ink-2: #111113;
-    --ink-3: #18181b;
-    --paper: #ededeb;
-    --muted: #8b8b90;
-    --faint: #5b5b61;
-    --line: rgba(237, 237, 235, 0.09);
-    --line-strong: rgba(237, 237, 235, 0.18);
+  /* Palette vars are registered so the page can animate between tones. */
+  @property --ink { syntax: '<color>'; inherits: true; initial-value: #14110f; }
+  @property --ink-2 { syntax: '<color>'; inherits: true; initial-value: #1b1714; }
+  @property --ink-3 { syntax: '<color>'; inherits: true; initial-value: #262019; }
+  @property --paper { syntax: '<color>'; inherits: true; initial-value: #efe9df; }
+  @property --muted { syntax: '<color>'; inherits: true; initial-value: #a89f93; }
+  @property --faint { syntax: '<color>'; inherits: true; initial-value: #6f675e; }
+  @property --line { syntax: '<color>'; inherits: true; initial-value: rgba(239, 233, 223, 0.1); }
+  @property --line-strong { syntax: '<color>'; inherits: true; initial-value: rgba(239, 233, 223, 0.2); }
+  @property --accent { syntax: '<color>'; inherits: true; initial-value: #ff5a1f; }
+  @property --on-accent { syntax: '<color>'; inherits: true; initial-value: #14110f; }
+
+  /* Oxide: espresso (dark) -> bone (light) -> vermilion (accent) */
+  :root,
+  :root[data-tone='dark'] {
+    --ink: #14110f;
+    --ink-2: #1b1714;
+    --ink-3: #262019;
+    --paper: #efe9df;
+    --muted: #a89f93;
+    --faint: #6f675e;
+    --line: rgba(239, 233, 223, 0.1);
+    --line-strong: rgba(239, 233, 223, 0.2);
     --accent: #ff5a1f;
+    --on-accent: #14110f;
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    transition: --ink 0.9s var(--ease-out), --ink-2 0.9s var(--ease-out), --ink-3 0.9s var(--ease-out),
+      --paper 0.9s var(--ease-out), --muted 0.9s var(--ease-out), --faint 0.9s var(--ease-out),
+      --line 0.9s var(--ease-out), --line-strong 0.9s var(--ease-out), --accent 0.9s var(--ease-out),
+      --on-accent 0.9s var(--ease-out);
+  }
+
+  :root[data-tone='light'] {
+    --ink: #ebe5da;
+    --ink-2: #e3dccf;
+    --ink-3: #d9d0c1;
+    --paper: #17130f;
+    --muted: #5c544b;
+    --faint: #8c8377;
+    --line: rgba(23, 19, 15, 0.13);
+    --line-strong: rgba(23, 19, 15, 0.28);
+    --accent: #e0461a;
+    --on-accent: #ebe5da;
+  }
+
+  :root[data-tone='accent'] {
+    --ink: #ff5a1f;
+    --ink-2: #f55217;
+    --ink-3: #e84a12;
+    --paper: #17130f;
+    --muted: #5e230c;
+    --faint: #8f3713;
+    --line: rgba(23, 19, 15, 0.2);
+    --line-strong: rgba(23, 19, 15, 0.4);
+    --accent: #f6efe4;
+    --on-accent: #17130f;
   }
 
   html {
@@ -44,7 +89,7 @@
   }
 
   ::selection {
-    background: var(--accent);
+    background: var(--paper);
     color: var(--ink);
   }
 
@@ -119,6 +164,7 @@
 
   .pill-solid:hover {
     background: var(--accent);
+    color: var(--on-accent);
   }
 }
 

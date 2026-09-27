@@ -8,6 +8,7 @@ import Loader from './components/Loader'
 import Nav from './components/Nav'
 import Toolkit from './components/Toolkit'
 import { initSmoothScroll, setScrollLocked } from './lib/scroll'
+import { initTones } from './lib/tone'
 
 const INTRO_KEY = 'intro-seen'
 
@@ -24,6 +25,7 @@ function App() {
   const [ready, setReady] = useState(readIntroSeen)
 
   useEffect(() => initSmoothScroll(), [])
+  useEffect(() => initTones(), [])
 
   useEffect(() => {
     if (ready) return

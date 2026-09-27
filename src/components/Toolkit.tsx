@@ -3,7 +3,7 @@ import { Fade, RevealLines } from './ui/Reveal'
 import SectionHeader from './ui/SectionHeader'
 
 const Toolkit = () => (
-  <section id="toolkit" className="py-28 md:py-40">
+  <section id="toolkit" data-tone="dark" className="py-28 md:py-40">
     <div className="shell">
       <SectionHeader index="04" label="Toolkit" aside="Tools of the trade" />
       <h2 className="display mt-14 text-[clamp(2.5rem,6vw,5.5rem)] md:mt-20">
@@ -35,7 +35,7 @@ const Toolkit = () => (
           <p className="label">{g.group}</p>
           <ul className="mt-5 space-y-2.5">
             {g.tools.map((t) => (
-              <li key={t.name} className="flex items-center gap-2.5 text-[15px] text-paper/85">
+              <li key={t.name} className="flex items-center gap-2.5 text-[15px] text-paper">
                 {t.icon ? <t.icon className="h-3.5 w-3.5 text-faint" /> : <span className="h-3.5 w-3.5 text-center text-[10px] leading-[14px] text-faint">◦</span>}
                 {t.name}
               </li>

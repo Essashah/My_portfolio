@@ -10,7 +10,7 @@ const Experience = () => {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section id="experience" className="shell py-28 md:py-40">
+    <section id="experience" data-tone="light" className="shell py-28 md:py-40">
       <SectionHeader index="03" label="Experience" aside="2020 — Present" />
 
       <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12">
@@ -51,7 +51,7 @@ const Experience = () => {
                     <span
                       aria-hidden
                       className={`mt-1 flex h-8 w-8 items-center justify-center rounded-full border hairline text-sm transition-all duration-500 ease-out-expo ${
-                        isOpen ? 'rotate-45 border-accent bg-accent text-ink' : 'group-hover:border-paper'
+                        isOpen ? 'rotate-45 border-accent bg-accent text-on-accent' : 'group-hover:border-paper'
                       }`}
                     >
                       +
@@ -68,7 +68,7 @@ const Experience = () => {
                         className="overflow-hidden"
                       >
                         <div className="pb-9 md:pl-[calc(11rem+1.5rem)]">
-                          <p className="text-[15px] text-paper/90">{role.summary}</p>
+                          <p className="text-[15px] text-paper">{role.summary}</p>
                           <ul className="mt-5 space-y-3">
                             {role.points.map((point) => (
                               <li key={point} className="flex gap-4 text-[15px] leading-relaxed text-muted">

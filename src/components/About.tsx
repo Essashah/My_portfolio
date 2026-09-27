@@ -10,13 +10,13 @@ const About = () => {
   const drift = useTransform(scrollYProgress, [0, 1], ['6%', '-6%'])
 
   return (
-    <section id="about" className="shell py-28 md:py-40">
+    <section id="about" data-tone="light" className="shell py-28 md:py-40">
       <SectionHeader index="01" label="About" aside="Engineer · Educator" />
 
       <div className="mt-14 grid gap-14 md:mt-20 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-4">
           <Fade>
-            <div ref={portraitRef} className="group relative aspect-[4/5] overflow-hidden rounded-[20px] bg-paper">
+            <div ref={portraitRef} className="group relative aspect-[4/5] overflow-hidden rounded-[20px] bg-ink-3">
               <motion.img
                 src="/icons/my emoji.png"
                 alt={`Portrait of ${profile.name}`}
@@ -24,8 +24,8 @@ const About = () => {
                 style={{ y: drift }}
               />
               <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
-                <span className="mono text-[11px] uppercase tracking-[0.12em] text-ink/60">{profile.name}</span>
-                <span className="mono text-[11px] uppercase tracking-[0.12em] text-ink/60">Essex, UK</span>
+                <span className="mono text-[11px] uppercase tracking-[0.12em] text-muted">{profile.name}</span>
+                <span className="mono text-[11px] uppercase tracking-[0.12em] text-muted">Essex, UK</span>
               </div>
             </div>
           </Fade>

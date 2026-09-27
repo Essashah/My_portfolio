@@ -31,7 +31,12 @@ const Hero = ({ ready }: { ready: boolean }) => {
   ]
 
   return (
-    <section id="top" ref={ref} className="relative flex min-h-[100svh] flex-col overflow-hidden">
+    <section id="top" data-tone="dark" ref={ref} className="relative flex min-h-[100svh] flex-col overflow-hidden">
+      {/* Ember glow: a low, warm light source the dot field sits over */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-[20%] top-[5%] h-[90vh] w-[80vw] rounded-full opacity-60 [background:radial-gradient(closest-side,rgba(255,90,31,0.16),rgba(255,90,31,0.05)_55%,transparent)]"
+      />
       <motion.div
         className="absolute inset-0 [mask-image:radial-gradient(ellipse_80%_70%_at_68%_42%,black_25%,transparent_78%)]"
         initial={{ opacity: 0 }}
@@ -51,7 +56,7 @@ const Hero = ({ ready }: { ready: boolean }) => {
           {meta.map((item) => (
             <div key={item.k}>
               <dt className="label text-faint">{item.k}</dt>
-              <dd className="mt-1.5 text-[13px] text-paper/90">{item.v}</dd>
+              <dd className="mt-1.5 text-[13px] text-paper">{item.v}</dd>
             </div>
           ))}
         </motion.dl>

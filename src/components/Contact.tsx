@@ -26,7 +26,7 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-ink-2 pt-28 md:pt-40">
+    <section id="contact" data-tone="accent" className="relative overflow-hidden pt-28 md:pt-40">
       <div className="shell">
         <SectionHeader index="05" label="Contact" aside="Say hello" />
 

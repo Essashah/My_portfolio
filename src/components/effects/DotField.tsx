@@ -74,7 +74,7 @@ const DotField = ({ className = '' }: { className?: string }) => {
           ctx.fillStyle =
             hot > 0.35
               ? `rgba(255, 90, 31, ${Math.min(1, intensity)})`
-              : `rgba(237, 237, 235, ${Math.min(0.9, intensity)})`
+              : `rgba(239, 233, 223, ${Math.min(0.9, intensity)})`
           ctx.fillRect(x - size / 2, y - size / 2, size, size)
         }
       }

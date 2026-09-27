@@ -3,7 +3,7 @@ import { Fade, RevealLines } from './ui/Reveal'
 import SectionHeader from './ui/SectionHeader'
 
 const Capabilities = () => (
-  <section id="work" className="shell py-28 md:py-40">
+  <section id="work" data-tone="light" className="shell py-28 md:py-40">
     <SectionHeader index="02" label="Capabilities" aside="What I build" />
 
     <h2 className="display mt-14 max-w-5xl text-[clamp(2.5rem,6vw,5.5rem)] md:mt-20">

@@ -57,7 +57,7 @@ const Nav = () => {
             <span className="serif text-lg italic text-accent transition-transform duration-500 group-hover:rotate-[360deg]">*</span>
           </button>
 
-          <nav className="hidden items-center gap-1 rounded-full border hairline bg-ink/60 px-2 py-1.5 backdrop-blur-md lg:flex">
+          <nav className="hidden items-center gap-1 rounded-full border hairline bg-[color-mix(in_srgb,var(--ink)_70%,transparent)] px-2 py-1.5 backdrop-blur-md lg:flex">
             {LINKS.map((link) => (
               <button
                 key={link.id}
